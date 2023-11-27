@@ -1,0 +1,41 @@
+import { DateTime, Settings } from 'luxon';
+import SetDateTimeCommand from './SetDateTimeCommand';
+import { ACTION_SET, CMD_DATETIME } from '../Const';
+
+describe('SetDateTimeCommand', () => {
+  let command: SetDateTimeCommand;
+  let originalNow: () => number;
+  const expectedNow = DateTime.local(1986, 4, 20, 12, 30, 0, 0);
+
+  beforeEach(() => {
+    originalNow = Settings.now;
+    Settings.now = () => expectedNow.toMillis();
+    command = new SetDateTimeCommand();
+  });
+
+  afterEach(() => {
+    Settings.now = originalNow;
+  });
+
+  test('constructor with given value', () => {
+    command = new SetDateTimeCommand(DateTime.now());
+    expect(command.value).toEqual(expectedNow);
+  });
+
+  test('constructor without given value', () => {
+    command = new SetDateTimeCommand();
+    expect(command.action).toEqual(ACTION_SET);
+  });
+
+  test('action', () => {
+    expect(command.action).toEqual(ACTION_SET);
+  });
+
+  test('args', () => {
+    expect(command.args).toEqual('86042071230');
+  });
+
+  test('name', () => {
+    expect(command.name).toEqual(CMD_DATETIME);
+  });
+});

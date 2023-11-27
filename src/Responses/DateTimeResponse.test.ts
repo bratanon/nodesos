@@ -1,0 +1,40 @@
+import { CMD_DATETIME } from '../Const';
+import DateTimeResponse from './DateTimeResponse';
+
+describe('DateTimeResponse', () => {
+  describe('when responding to ACTION_SET', () => {
+    let response: DateTimeResponse;
+    beforeAll(() => {
+      response = new DateTimeResponse('dts86042071200');
+    });
+
+    test('constructor', () => {
+      expect(response.wasSet).toEqual(true);
+      expect(response.remoteDatetime).toEqual('1986-04-20T12:00:00.000');
+      expect(response.commandName).toEqual(CMD_DATETIME);
+    });
+
+    test('fails when text length is not exactly 11', () => {
+      expect(() => new DateTimeResponse('dts860420712'))
+        .toThrow('Date/Time response length is invalid. Got \'860420712\'');
+    });
+  });
+
+  describe('when responding to ACTION_GET', () => {
+    let response: DateTimeResponse;
+    beforeAll(() => {
+      response = new DateTimeResponse('dt86042071200');
+    });
+
+    test('constructor', () => {
+      expect(response.wasSet).toEqual(false);
+      expect(response.remoteDatetime).toEqual('1986-04-20T12:00:00.000');
+      expect(response.commandName).toEqual(CMD_DATETIME);
+    });
+
+    test('fails when text length is not exactly 11', () => {
+      expect(() => new DateTimeResponse('dt860420712'))
+        .toThrow('Date/Time response length is invalid. Got \'860420712\'');
+    });
+  });
+});

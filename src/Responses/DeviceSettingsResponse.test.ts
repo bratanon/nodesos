@@ -1,0 +1,49 @@
+import DeviceSettingsResponse from './DeviceSettingsResponse';
+import { CMD_DEVICE_PREFIX } from '../Const';
+import { ESFlags, FlagEnum } from '../Enums';
+import { DC_BURGLAR } from '../DeviceCategory';
+
+class MockedClass extends DeviceSettingsResponse {
+  constructor(text: string) {
+    super(text);
+  }
+}
+
+describe('DeviceSettingsResponse', () => {
+  test('constructor', () => {
+    const response = new MockedClass('ib?0511021410');
+    expect(response.commandName).toEqual(CMD_DEVICE_PREFIX + DC_BURGLAR.code);
+    expect(response.deviceCategory).toEqual(DC_BURGLAR);
+    expect(response.enableStatus).toEqual(new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised));
+    expect(response.groupNumber).toEqual(17);
+    expect(response.index).toEqual(5);
+    expect(response.unitNumber).toEqual(2);
+    expect(response.zone).toEqual('11-02');
+  })
+
+  describe('zone', () => {
+    let response: DeviceSettingsResponse;
+    let groupMock: jest.Mock;
+    let unitMock: jest.Mock;
+
+    beforeAll(() => {
+      response = new MockedClass('');
+      groupMock = jest.fn();
+      unitMock = jest.fn();
+      Object.defineProperty(response, 'groupNumber', { get: groupMock })
+      Object.defineProperty(response, 'unitNumber', { get: unitMock })
+    });
+
+    test('returns 00-00', () => {
+      groupMock.mockReturnValue(0);
+      unitMock.mockReturnValue(0);
+      expect(response.zone).toEqual('00-00');
+    });
+
+    test('returns 11-20', () => {
+      groupMock.mockReturnValue(17);
+      unitMock.mockReturnValue(20);
+      expect(response.zone).toEqual('11-14');
+    });
+  });
+});
