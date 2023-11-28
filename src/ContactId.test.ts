@@ -6,45 +6,45 @@ describe('ContactID', () => {
   describe('constructor', () => {
     test('with BaseUnit PeriodicTestReport', () => {
       const contactId = new ContactId('1ac3181602005006');
-      expect(contactId.accountNumber).toEqual(6851);
-      expect(contactId.checksum).toEqual(6);
+      expect(contactId.accountNumber).toBe(6851);
+      expect(contactId.checksum).toBe(6);
       expect(contactId.deviceCategory).toEqual(DC_BASEUNIT);
       expect(contactId.eventCategory).toEqual(new IntEnum(ContactIDEventCategory, ContactIDEventCategory.Test_Misc));
       expect(contactId.eventCode).toEqual(new IntEnum(ContactIDEventCode, ContactIDEventCode.PeriodicTestReport));
       expect(contactId.eventQualifier).toEqual(new IntEnum(ContactIDEventQualifier, ContactIDEventQualifier.Event));
       expect(contactId.groupNumber).toBeUndefined();
-      expect(contactId.messageType).toEqual(24);
+      expect(contactId.messageType).toBe(24);
       expect(contactId.unitNumber).toBeUndefined();
       expect(contactId.userId).toBeUndefined();
     });
 
     test('with Burglar RFLowBattery', () => {
       const contactId = new ContactId('1ac318138403110e');
-      expect(contactId.accountNumber).toEqual(6851);
-      expect(contactId.checksum).toEqual(14);
+      expect(contactId.accountNumber).toBe(6851);
+      expect(contactId.checksum).toBe(14);
       expect(contactId.deviceCategory).toEqual(DC_BURGLAR);
       expect(contactId.eventCategory).toEqual(new IntEnum(ContactIDEventCategory, ContactIDEventCategory.Trouble));
       expect(contactId.eventCode).toEqual(new IntEnum(ContactIDEventCode, ContactIDEventCode.RFLowBattery));
       expect(contactId.eventQualifier).toEqual(new IntEnum(ContactIDEventQualifier, ContactIDEventQualifier.Event));
-      expect(contactId.groupNumber).toEqual(3);
-      expect(contactId.messageType).toEqual(24);
-      expect(contactId.unitNumber).toEqual(16);
+      expect(contactId.groupNumber).toBe(3);
+      expect(contactId.messageType).toBe(24);
+      expect(contactId.unitNumber).toBe(16);
       expect(contactId.userId).toBeUndefined();
     });
 
     // @TODO: See if we can get a contact ID with a 'zoneUser'. MAybe when switching alarm state with controller.
     // test('with ??????', () => {
     //   const contactId = new ContactId('1ac318138403110e');
-    //   expect(contactId.accountNumber).toEqual(6851);
-    //   expect(contactId.checksum).toEqual(14);
+    //   expect(contactId.accountNumber).toBe(6851);
+    //   expect(contactId.checksum).toBe(14);
     //   expect(contactId.deviceCategory).toEqual(DC_BURGLAR);
     //   expect(contactId.eventCategory).toEqual(new IntEnum(ContactIDEventCategory, ContactIDEventCategory.Trouble));
     //   expect(contactId.eventCode).toEqual(new IntEnum(ContactIDEventCode, ContactIDEventCode.RFLowBattery));
     //   expect(contactId.eventQualifier).toEqual(new IntEnum(ContactIDEventQualifier, ContactIDEventQualifier.Event));
-    //   expect(contactId.groupNumber).toEqual(3);
-    //   expect(contactId.messageType).toEqual(24);
-    //   expect(contactId.unitNumber).toEqual(16);
-    //   expect(contactId.userId).toEqual(??);
+    //   expect(contactId.groupNumber).toBe(3);
+    //   expect(contactId.messageType).toBe(24);
+    //   expect(contactId.unitNumber).toBe(16);
+    //   expect(contactId.userId).toBe(??);
     // });
 
     test('fails when given text is not 16 chars long', () => {

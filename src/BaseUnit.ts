@@ -1,7 +1,6 @@
 import * as log4js from 'log4js';
 import { DateTime } from 'luxon';
-import { sprintf } from 'sprintf-js';
-import DeviceChangedResponse from './Responses/DeviceChangedResponse';
+import { sprintf } from 'sprintf-js'
 import EventLogNotFoundResponse from './Responses/EventLogNotFoundResponse';
 import Client from './Client';
 import Command from './Command';
@@ -33,7 +32,6 @@ import {
   IntEnum,
   OperationMode,
 } from './Enums';
-import PropertyChangedInfo from './PropertyChangedInfo';
 import Response from './Response';
 import DateTimeResponse from './Responses/DateTimeResponse';
 import DeviceAddedResponse from './Responses/DeviceAddedResponse';
@@ -46,6 +44,7 @@ import EventLogResponse from './Responses/EventLogResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
+import PropertyChangedInfo from './PropertyChangedInfo';
 
 const logger = log4js.getLogger();
 
@@ -362,7 +361,7 @@ export class BaseUnit {
     await this.getInitialState();
   }
 
-  private handleConnectionLost(hadError: boolean) {
+  private handleConnectionLost() {
     // When we lose connection as a Client, schedule reconnect attempt
     //logger.error("Connection was lost. Will attempt to reconnect in %s seconds")
     logger.error("Connection was lost.")
@@ -522,7 +521,7 @@ export class BaseUnit {
     }
   }
 
-  private handleResponse(response: Response, command?: Command) {
+  private handleResponse(response: Response) {
     // Update any properties of the base unit
     if (response instanceof ROMVersionResponse) {
       this.ROMVersion = response.version;

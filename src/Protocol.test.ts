@@ -61,8 +61,6 @@ class ProtocolProxy extends Protocol {
   }
 }
 
-const SERVER_PORT = 8080;
-
 jest.mock('log4js', () => {
   const debug = jest.fn();
   const info = jest.fn();
@@ -112,14 +110,16 @@ describe('Protocol', () => {
 
   describe('handleOnConnect', () => {
     test('sets _isConnected to true', () => {
-      expect(protocol.isConnected).toEqual(false);
+      expect(protocol.isConnected).toBe(false);
       protocol.handleOnConnect();
-      expect(protocol.isConnected).toEqual(true);
+      expect(protocol.isConnected).toBe(true);
     });
 
     test('calls onConnectionMade when defined', () => {
       protocol.onConnectionMade = jest.fn();
       protocol.handleOnConnect();
+
+      expect(protocol.onConnectionMade).toHaveBeenCalled();
     });
   });
 
@@ -144,18 +144,20 @@ describe('Protocol', () => {
   describe('handleOnEnd', () => {
     test('sets _isConnected to false', () => {
       protocol.handleOnConnect();
-      expect(protocol.isConnected).toEqual(true);
+      expect(protocol.isConnected).toBe(true);
       protocol.handleOnEnd();
-      expect(protocol.isConnected).toEqual(false);
+      expect(protocol.isConnected).toBe(false);
     });
 
     test('calls onConnectionEnd when defined', () => {
       protocol.onConnectionEnd = jest.fn();
       protocol.handleOnEnd();
+      expect(protocol.onConnectionEnd).toHaveBeenCalled();
     });
   });
 
   describe('handleOnData', () => {
+    /* eslint-disable-next-line jest/expect-expect */
     test('Only for coverage', () => {
       // Only for coverage as istanbul can't ignore else-if statements.
       protocol.handleOnData(Buffer.from('XINPIC=\r\n', 'ascii'));
@@ -164,7 +166,7 @@ describe('Protocol', () => {
       protocol.handleOnData(Buffer.from('Something else\r\n', 'ascii'));
     });
 
-    test('handles the line buffer when given an incomplete line', () => {;
+    test('handles the line buffer when given an incomplete line', () => {
       protocol.onDeviceEvent = jest.fn();
       protocol.handleOnData(Buffer.from('MINP', 'ascii'));
       protocol.handleOnData(Buffer.from('IC=0000000000000000000000\r\n', 'ascii'));
@@ -221,27 +223,30 @@ describe('Protocol', () => {
         expect(protocol.onResponse).not.toHaveBeenCalled();
       });
 
+      /* eslint-disable-next-line jest/no-done-callback */
       test('emits to the state event', (done) => {
+        const emitSpy = jest.spyOn(state.event, 'emit');
         state.event.once(state.command.name, () => { done() });
         getExecutingMock.mockReturnValue({ [state.command.name]: state});
-
-        protocol.handleOnData(Buffer.from(string, 'ascii'));
-      });
-
-      test('calls onResponse without command when given a known command response but its not executing', () => {
-        getExecutingMock.mockReturnValue([]);
-
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse), undefined);
+        expect(emitSpy).toHaveBeenCalledWith(state.command.name, expect.any(ClearedStatusResponse))
       });
 
-      test('calls onResponse with the command when given a known command response', () => {
+      // test('calls onResponse without command when given a known command response but its not executing', () => {
+      //   getExecutingMock.mockReturnValue([]);
+      //
+      //   protocol.handleOnData(Buffer.from(string, 'ascii'));
+      //
+      //   expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse), undefined);
+      // });
+
+      test('calls onResponse', () => {
         getExecutingMock.mockReturnValue({ [state.command.name]: state});
 
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse), state.command);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse),);
       });
     });
 
@@ -265,120 +270,120 @@ describe('Protocol', () => {
       test('calls onResponse with a DateTimeResponse', () => {
         protocol.handleOnData(Buffer.from('!dt86042071200&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DateTimeResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DateTimeResponse));
       });
 
       test('calls onResponse with a OpModeResponse', () => {
         protocol.handleOnData(Buffer.from('!n08&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(OpModeResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(OpModeResponse));
       });
 
       test('calls onResponse with a DeviceNotFoundResponse (K prefix) (RESPONSE_ERROR)', () => {
         protocol.handleOnData(Buffer.from('!kbno&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse));
       });
 
       test('calls onResponse with a DeviceNotFoundResponse (K prefix) (00)', () => {
         protocol.handleOnData(Buffer.from('!kb00&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse));
       });
 
       test('calls onResponse with a DeviceInfoResponse', () => {
         protocol.handleOnData(Buffer.from('!kb50f01a7a0010e41102141000005b05&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceInfoResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceInfoResponse));
       });
 
       test('calls onResponse with a DeviceNotFoundResponse (i prefix)', () => {
         protocol.handleOnData(Buffer.from('!ibno&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceNotFoundResponse));
       });
 
       test('calls onResponse with a DeviceAddingResponse', () => {
         protocol.handleOnData(Buffer.from('!ibl&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceAddingResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceAddingResponse));
       });
 
       test('calls onResponse with a DeviceAddedResponse', () => {
         protocol.handleOnData(Buffer.from('!ibl0511021410&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceAddedResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceAddedResponse));
       });
 
       test('calls onResponse with a DeviceChangedResponse', () => {
         protocol.handleOnData(Buffer.from('!ibs0511021410&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceChangedResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceChangedResponse));
       });
 
       test('calls onResponse with a DeviceDeletedResponse', () => {
         protocol.handleOnData(Buffer.from('!ibk01&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceDeletedResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceDeletedResponse));
       });
 
       test('calls onResponse with a DeviceInfoResponse (i prefix)', () => {
         protocol.handleOnData(Buffer.from('!ib0050f01a7a0010e41102141000005b05&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceInfoResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(DeviceInfoResponse));
       });
 
       test('calls onResponse with a ClearedStatusResponse', () => {
         protocol.handleOnData(Buffer.from('!l5&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse));
       });
 
       test('calls onResponse with a ROMVersionResponse', () => {
         protocol.handleOnData(Buffer.from('!vn123456&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ROMVersionResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ROMVersionResponse));
       });
 
       test('calls onResponse with a ExitDelayResponse', () => {
         protocol.handleOnData(Buffer.from('!l005&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ExitDelayResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ExitDelayResponse));
       });
 
       test('calls onResponse with a EntryDelayResponse', () => {
         protocol.handleOnData(Buffer.from('!l105&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EntryDelayResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EntryDelayResponse));
       });
 
       test('calls onResponse with a EventLogNotFoundResponse', () => {
         protocol.handleOnData(Buffer.from('!evno&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EventLogNotFoundResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EventLogNotFoundResponse));
       });
 
       test('calls onResponse with a EventLogResponse', () => {
         protocol.handleOnData(Buffer.from('!ev344160000200112201520b7&\r\n', 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EventLogResponse), undefined);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(EventLogResponse));
       });
     });
 
     describe('execute', () => {
-      let isConnectedMock = jest.fn();
+      const isConnectedMock = jest.fn();
       beforeEach(() => {
         protocol.socket.write = jest.fn();
         Object.defineProperty(protocol, '_isConnected', { get: isConnectedMock });
       });
 
-
+      /* eslint-disable-next-line jest/no-done-callback */
       test('writes to socket and clears the timeout', (done) => {
         isConnectedMock.mockReturnValue(true);
         const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
 
         protocol.execute(new GetDateTimeCommand())
-          .then((response) => {
+          .then(() => {
             expect(protocol.socket.write).toHaveBeenNthCalledWith(1, '!dt?&');
             expect(clearTimeoutSpy).toHaveBeenCalled();
             done();
@@ -387,6 +392,7 @@ describe('Protocol', () => {
         protocol.handleOnData(Buffer.from('!dt86042071200&\r\n', 'ascii'));
       });
 
+      /* eslint-disable-next-line jest/no-done-callback */
       test('writes to socket with password', (done) => {
         isConnectedMock.mockReturnValue(true);
 

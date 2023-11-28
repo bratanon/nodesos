@@ -109,7 +109,7 @@ export abstract class Protocol {
   /**
    * Called when a response has been received.
    */
-  onResponse: ((response: Response, command?: Command) => void) | undefined;
+  onResponse: ((response: Response) => void) | undefined;
 
   protected constructor() {
     // @TODO: Fix keep alive?
@@ -260,7 +260,7 @@ export abstract class Protocol {
           }
 
           if (this.onResponse) {
-            this.onResponse(response, state?.command);
+            this.onResponse(response);
           }
         }
       }
@@ -298,13 +298,17 @@ export abstract class Protocol {
       // Events from devices that haven't been enrolled, as well as a
       // display event from the base unit providing details to be shown.
       // Ignoring them as we have no interest in either.
+      /* eslint-disable-next-line no-empty */
       else if (line.startsWith('XINPIC=')) {}
       // New sensor log entry; superfluous given device events already
       // provide us with this information, so just ignore them
-       else if (line.startsWith('[' + CMD_SENSOR_LOG) && line.endsWith(']')) {}
+      /* eslint-disable-next-line no-empty */
+      else if (line.startsWith('[' + CMD_SENSOR_LOG) && line.endsWith(']')) {}
       // Failure to trigger an X10 switch
+      /* eslint-disable-next-line no-empty */
       else if (line === 'X10 ERR') {}
       // Any unrecognised messages; ignore them too...
+      /* eslint-disable-next-line no-empty */
       else {}
     }
   }
@@ -406,7 +410,7 @@ export abstract class Protocol {
 
     this.executing[command.name] = state;
 
-    this._send(command, password, timeout);
+    this._send(command, password);
 
     return new Promise<R>((resolve, reject) => {
       const timer = setTimeout(() => {
@@ -423,7 +427,7 @@ export abstract class Protocol {
     });
   }
 
-  private _send(command: Command, password: string, timeout: number) {
+  private _send(command: Command, password: string) {
     // When no password specified on this call, use global password
     if (password === '') {
       password = this.password;

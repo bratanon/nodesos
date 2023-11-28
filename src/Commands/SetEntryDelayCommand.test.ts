@@ -8,7 +8,7 @@ describe('SetEntryDelayCommand', () => {
   });
 
   test('constructor', () => {
-    expect(command.entryDelay).toEqual(5);
+    expect(command.entryDelay).toBe(5);
   });
 
   test('constructor fails when entryDelay < 0x00', () => {
@@ -26,7 +26,7 @@ describe('SetEntryDelayCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual("05");
+    expect(command.args).toBe("05");
   });
 
   test('name', () => {

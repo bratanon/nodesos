@@ -10,8 +10,8 @@ describe('GetDeviceCommand', () => {
 
   test('constructor', () => {
     expect(command.deviceCategory).toEqual(DC_BURGLAR);
-    expect(command.groupNumber).toEqual(1);
-    expect(command.unitNumber).toEqual(2);
+    expect(command.groupNumber).toBe(1);
+    expect(command.unitNumber).toBe(2);
   });
 
   test('action', () => {
@@ -19,7 +19,7 @@ describe('GetDeviceCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual('0102');
+    expect(command.args).toBe('0102');
   });
 
   test('name', () => {

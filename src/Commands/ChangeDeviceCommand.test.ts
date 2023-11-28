@@ -17,9 +17,9 @@ describe('ChangeDeviceCommand', () => {
 
   test('constructor', () => {
     expect(command.deviceCategory).toEqual(DC_BURGLAR);
-    expect(command.index).toEqual(1);
-    expect(command.groupNumber).toEqual(2);
-    expect(command.unitNumber).toEqual(3);
+    expect(command.index).toBe(1);
+    expect(command.groupNumber).toBe(2);
+    expect(command.unitNumber).toBe(3);
     expect(command.enableStatus).toEqual(ESFlags.Supervised ^ ESFlags.AlarmSiren);
   });
 
@@ -29,7 +29,7 @@ describe('ChangeDeviceCommand', () => {
 
   test('args', () => {
     const enableStatus = (ESFlags.Supervised ^ ESFlags.AlarmSiren).toString(16).padStart(4, '0');
-    expect(command.args).toEqual(`010203${enableStatus}0000`);
+    expect(command.args).toBe(`010203${enableStatus}0000`);
   });
 
   test('name', () => {

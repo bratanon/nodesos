@@ -15,10 +15,10 @@ describe('DeviceSettingsResponse', () => {
     expect(response.commandName).toEqual(CMD_DEVICE_PREFIX + DC_BURGLAR.code);
     expect(response.deviceCategory).toEqual(DC_BURGLAR);
     expect(response.enableStatus).toEqual(new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised));
-    expect(response.groupNumber).toEqual(17);
-    expect(response.index).toEqual(5);
-    expect(response.unitNumber).toEqual(2);
-    expect(response.zone).toEqual('11-02');
+    expect(response.groupNumber).toBe(17);
+    expect(response.index).toBe(5);
+    expect(response.unitNumber).toBe(2);
+    expect(response.zone).toBe('11-02');
   })
 
   describe('zone', () => {
@@ -37,13 +37,13 @@ describe('DeviceSettingsResponse', () => {
     test('returns 00-00', () => {
       groupMock.mockReturnValue(0);
       unitMock.mockReturnValue(0);
-      expect(response.zone).toEqual('00-00');
+      expect(response.zone).toBe('00-00');
     });
 
     test('returns 11-20', () => {
       groupMock.mockReturnValue(17);
       unitMock.mockReturnValue(20);
-      expect(response.zone).toEqual('11-14');
+      expect(response.zone).toBe('11-14');
     });
   });
 });

@@ -13,7 +13,7 @@ describe('SetOpModeCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual("0");
+    expect(command.args).toBe("0");
   });
 
   test('name', () => {

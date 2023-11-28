@@ -9,8 +9,8 @@ describe('EntryDelayResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(true);
-      expect(response.entryDelay).toEqual(6);
+      expect(response.wasSet).toBe(true);
+      expect(response.entryDelay).toBe(6);
       expect(response.commandName).toEqual(CMD_ENTRY_DELAY);
     });
   });
@@ -22,8 +22,8 @@ describe('EntryDelayResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(false);
-      expect(response.entryDelay).toEqual(6);
+      expect(response.wasSet).toBe(false);
+      expect(response.entryDelay).toBe(6);
       expect(response.commandName).toEqual(CMD_ENTRY_DELAY);
     });
   });

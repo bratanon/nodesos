@@ -17,21 +17,21 @@ const TestEnum = Object.freeze({
 describe('IntEnum', () => {
   test('getKey', () => {
     const subject = new IntEnum(TestEnum, 0x3);
-    expect(subject.value).toEqual(0x3);
-    expect(subject.string).toEqual('Baz');
+    expect(subject.value).toBe(0x3);
+    expect(subject.string).toBe('Baz');
   });
 });
 
 describe('FlagEnum', () => {
   test('getKeys 0xF', () => {
     const subject = new FlagEnum(TestFlags, 0x3);
-    expect(subject.value).toEqual(0x3);
-    expect(subject.string).toEqual('Foo|Bar');
+    expect(subject.value).toBe(0x3);
+    expect(subject.string).toBe('Foo|Bar');
   });
 
   test('has', () => {
     const subject = new FlagEnum(TestFlags, 0x3);
-    expect(subject.has(TestFlags.Bar)).toEqual(true);
-    expect(subject.has(TestFlags.Qux)).toEqual(false);
+    expect(subject.has(TestFlags.Bar)).toBe(true);
+    expect(subject.has(TestFlags.Qux)).toBe(false);
   });
 })

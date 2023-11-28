@@ -1,5 +1,3 @@
-import { sprintf } from 'sprintf-js';
-import util from 'util';
 import { ACTION_NONE, MARKER_END, MARKER_START } from './Const';
 
 /**

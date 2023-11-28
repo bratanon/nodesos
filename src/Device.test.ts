@@ -1,6 +1,5 @@
 import * as log4js from 'log4js';
 import PropertyChangedInfo from './PropertyChangedInfo';
-
 import Device from './Device';
 import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
@@ -87,7 +86,7 @@ describe('Device', () => {
     });
 
     describe('isClosed', () => {
-      let setIsClosedMock = jest.fn();
+      const setIsClosedMock = jest.fn();
       beforeEach(() => {
         Object.defineProperty(device, '_isClosed', { set: setIsClosedMock });
       });

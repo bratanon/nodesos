@@ -7,6 +7,6 @@ describe('DeviceDeletedResponse', () => {
     const response = new DeviceDeletedResponse('ibk01');
     expect(response.commandName).toEqual(CMD_DEVICE_PREFIX + DC_BURGLAR.code);
     expect(response.deviceCategory).toEqual(DC_BURGLAR);
-    expect(response.index).toEqual(1);
+    expect(response.index).toBe(1);
   });
 });

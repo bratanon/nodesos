@@ -5,14 +5,14 @@ const line = 'MINPIC=0a404020fccd00109a4fff';
 describe('Device Event', () => {
   test('constructor', () => {
     const response = new DeviceEvent(line);
-    expect(response.currentStatus).toEqual(154);
+    expect(response.currentStatus).toBe(154);
     expect(response.deviceCharacteristics).toEqual(new FlagEnum(DCFlags, DCFlags.RFVoice | DCFlags.Reserved_b1));
-    expect(response.deviceId).toEqual(2161869);
+    expect(response.deviceId).toBe(2161869);
     expect(response.deviceType).toEqual(new IntEnum(DeviceType, DeviceType.DoorMagnet));
     expect(response.eventCode).toEqual(new IntEnum(DeviceEventCode, DeviceEventCode.Open));
-    expect(response.messageAttribute).toEqual(0);
-    expect(response.RSSIBars).toEqual(4);
-    expect(response.RSSIDb).toEqual(90);
+    expect(response.messageAttribute).toBe(0);
+    expect(response.RSSIBars).toBe(4);
+    expect(response.RSSIDb).toBe(90);
   });
 
   test('constructor fails when text length < 19', () => {
@@ -31,27 +31,27 @@ describe('Device Event', () => {
 
     test('returns 0', () => {
       // spy.mockReturnValue(40);
-      expect(response.RSSIBars).toEqual(0);
+      expect(response.RSSIBars).toBe(0);
     });
 
     test('returns 1', () => {
       spy.mockReturnValue(50);
-      expect(response.RSSIBars).toEqual(1);
+      expect(response.RSSIBars).toBe(1);
     });
 
     test('returns 2', () => {
       spy.mockReturnValue(70);
-      expect(response.RSSIBars).toEqual(2);
+      expect(response.RSSIBars).toBe(2);
     });
 
     test('returns 3', () => {
       spy.mockReturnValue(80);
-      expect(response.RSSIBars).toEqual(3);
+      expect(response.RSSIBars).toBe(3);
     });
 
     test('returns 4', () => {
       spy.mockReturnValue(99);
-      expect(response.RSSIBars).toEqual(4);
+      expect(response.RSSIBars).toBe(4);
     });
   });
 
@@ -67,17 +67,17 @@ describe('Device Event', () => {
 
     test('returns 01', () => {
       mock.mockReturnValue(-20);
-      expect(response.RSSIDb).toEqual(0);
+      expect(response.RSSIDb).toBe(0);
     });
 
     test('returns 101', () => {
       mock.mockReturnValue(70);
-      expect(response.RSSIDb).toEqual(6);
+      expect(response.RSSIDb).toBe(6);
     });
 
     test('returns 991', () => {
       mock.mockReturnValue(1000);
-      expect(response.RSSIDb).toEqual(99);
+      expect(response.RSSIDb).toBe(99);
     });
   });
 });

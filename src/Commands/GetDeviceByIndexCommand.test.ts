@@ -10,7 +10,7 @@ describe('GetDeviceByIndexCommand', () => {
 
   test('constructor', () => {
     expect(command.deviceCategory).toEqual(DC_BURGLAR);
-    expect(command.index).toEqual(15);
+    expect(command.index).toBe(15);
   });
 
   test('action', () => {
@@ -18,7 +18,7 @@ describe('GetDeviceByIndexCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual('0?');
+    expect(command.args).toBe('0?');
   });
 
   test('name', () => {

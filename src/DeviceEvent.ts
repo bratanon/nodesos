@@ -38,8 +38,7 @@ class DeviceEvent {
   /**
    * Message Attribute.
    */
-  readonly messageAttribute: Number;
-
+  readonly messageAttribute: number;
 
   constructor(text: string) {
     if (text.length < 19) {

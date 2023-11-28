@@ -1,5 +1,5 @@
 import Command from '../Command';
-import { ACTION_GET, CMD_EVENT_LOG } from '../Const';
+import { CMD_EVENT_LOG } from '../Const';
 import { toAsciiHex } from '../Util';
 
 /**

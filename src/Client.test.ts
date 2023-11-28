@@ -3,7 +3,7 @@ import Client from './Client';
 describe('Client', () => {
   test('constructor', () => {
     const client = new Client(8080);
-    expect(client.port).toEqual(8080);
+    expect(client.port).toBe(8080);
   });
 
   describe('open', () => {

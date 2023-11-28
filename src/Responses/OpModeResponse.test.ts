@@ -10,7 +10,7 @@ describe('OpModeResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(true);
+      expect(response.wasSet).toBe(true);
       expect(response.operationMode).toEqual(new IntEnum(OperationMode, OperationMode.Disarm));
       expect(response.commandName).toEqual(CMD_OPMODE);
     });
@@ -23,7 +23,7 @@ describe('OpModeResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(false);
+      expect(response.wasSet).toBe(false);
       expect(response.operationMode).toEqual(new IntEnum(OperationMode, OperationMode.Monitor));
       expect(response.commandName).toEqual(CMD_OPMODE);
     });

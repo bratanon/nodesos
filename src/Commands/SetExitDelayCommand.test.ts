@@ -8,7 +8,7 @@ describe('SetExitDelayCommand', () => {
   });
 
   test('constructor', () => {
-    expect(command.exitDelay).toEqual(5);
+    expect(command.exitDelay).toBe(5);
   });
 
   test('constructor fails when entryDelay < 0x00', () => {
@@ -26,7 +26,7 @@ describe('SetExitDelayCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual("05");
+    expect(command.args).toBe("05");
   });
 
   test('name', () => {

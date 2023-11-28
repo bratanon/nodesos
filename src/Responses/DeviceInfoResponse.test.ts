@@ -8,20 +8,20 @@ describe('DeviceInfoResponse', () => {
   test('constructor', () => {
     const response = new DeviceInfoResponse(line);
     expect(response.commandName).toEqual(CMD_DEVICE_PREFIX + DC_BURGLAR.code);
-    expect(response.currentStatus).toEqual(91);
+    expect(response.currentStatus).toBe(91);
     expect(response.deviceCategory).toEqual(DC_BURGLAR);
     expect(response.deviceCharacteristics).toEqual(new FlagEnum(DCFlags, DCFlags.Supervisory));
-    expect(response.deviceId).toEqual(15735418);
+    expect(response.deviceId).toBe(15735418);
     expect(response.deviceType).toEqual(new IntEnum(DeviceType, DeviceType.PIRSensor));
-    expect(response.downCount).toEqual(5);
+    expect(response.downCount).toBe(5);
     expect(response.enableStatus).toEqual(new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised));
-    expect(response.groupNumber).toEqual(17);
-    expect(response.index).toEqual(0);
-    expect(response.messageAttribute).toEqual(0);
-    expect(response.unitNumber).toEqual(2);
-    expect(response.RSSIBars).toEqual(0);
-    expect(response.RSSIDb).toEqual(27);
-    expect(response.zone).toEqual('11-02');
+    expect(response.groupNumber).toBe(17);
+    expect(response.index).toBe(0);
+    expect(response.messageAttribute).toBe(0);
+    expect(response.unitNumber).toBe(2);
+    expect(response.RSSIBars).toBe(0);
+    expect(response.RSSIDb).toBe(27);
+    expect(response.zone).toBe('11-02');
   })
 
   describe('RSSIBars', () => {
@@ -35,27 +35,27 @@ describe('DeviceInfoResponse', () => {
 
     test('returns 0', () => {
       spy.mockReturnValue(40);
-      expect(response.RSSIBars).toEqual(0);
+      expect(response.RSSIBars).toBe(0);
     });
 
     test('returns 1', () => {
       spy.mockReturnValue(50);
-      expect(response.RSSIBars).toEqual(1);
+      expect(response.RSSIBars).toBe(1);
     });
 
     test('returns 2', () => {
       spy.mockReturnValue(70);
-      expect(response.RSSIBars).toEqual(2);
+      expect(response.RSSIBars).toBe(2);
     });
 
     test('returns 3', () => {
       spy.mockReturnValue(80);
-      expect(response.RSSIBars).toEqual(3);
+      expect(response.RSSIBars).toBe(3);
     });
 
     test('returns 4', () => {
       spy.mockReturnValue(99);
-      expect(response.RSSIBars).toEqual(4);
+      expect(response.RSSIBars).toBe(4);
     });
   });
 
@@ -71,17 +71,17 @@ describe('DeviceInfoResponse', () => {
 
     test('returns 0', () => {
       mock.mockReturnValue(-20);
-      expect(response.RSSIDb).toEqual(0);
+      expect(response.RSSIDb).toBe(0);
     });
 
     test('returns 10', () => {
       mock.mockReturnValue(70);
-      expect(response.RSSIDb).toEqual(6);
+      expect(response.RSSIDb).toBe(6);
     });
 
     test('returns 99', () => {
       mock.mockReturnValue(1000);
-      expect(response.RSSIDb).toEqual(99);
+      expect(response.RSSIDb).toBe(99);
     });
   });
 
@@ -101,13 +101,13 @@ describe('DeviceInfoResponse', () => {
     test('returns 00-00', () => {
       groupMock.mockReturnValue(0);
       unitMock.mockReturnValue(0);
-      expect(response.zone).toEqual('00-00');
+      expect(response.zone).toBe('00-00');
     });
 
     test('returns 11-20', () => {
       groupMock.mockReturnValue(17);
       unitMock.mockReturnValue(20);
-      expect(response.zone).toEqual('11-14');
+      expect(response.zone).toBe('11-14');
     });
   });
 
@@ -132,13 +132,13 @@ describe('DeviceInfoResponse', () => {
     test('returns true', () => {
       typeMock.mockReturnValue(new IntEnum(DeviceType, DeviceType.DoorMagnet));
       statusMock.mockReturnValue(1);
-      expect(response.isClosed).toEqual(true);
+      expect(response.isClosed).toBe(true);
     });
 
     test('returns false', () => {
       typeMock.mockReturnValue(new IntEnum(DeviceType, DeviceType.DoorMagnet));
       statusMock.mockReturnValue(0);
-      expect(response.isClosed).toEqual(false);
+      expect(response.isClosed).toBe(false);
     });
   });
 });

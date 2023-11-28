@@ -32,7 +32,7 @@ describe('SetDateTimeCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual('86042071230');
+    expect(command.args).toBe('86042071230');
   });
 
   test('name', () => {

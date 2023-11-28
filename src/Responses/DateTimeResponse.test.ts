@@ -9,8 +9,8 @@ describe('DateTimeResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(true);
-      expect(response.remoteDatetime).toEqual('1986-04-20T12:00:00.000');
+      expect(response.wasSet).toBe(true);
+      expect(response.remoteDatetime).toBe('1986-04-20T12:00:00.000');
       expect(response.commandName).toEqual(CMD_DATETIME);
     });
 
@@ -27,8 +27,8 @@ describe('DateTimeResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(false);
-      expect(response.remoteDatetime).toEqual('1986-04-20T12:00:00.000');
+      expect(response.wasSet).toBe(false);
+      expect(response.remoteDatetime).toBe('1986-04-20T12:00:00.000');
       expect(response.commandName).toEqual(CMD_DATETIME);
     });
 

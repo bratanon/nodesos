@@ -22,7 +22,7 @@ import SetOpModeCommand from './Commands/SetOpModeCommand';
 import ContactId from './ContactId';
 import Device from './Device';
 import { DC_ALL, DC_CONTROLLER } from './DeviceCategory';
-import { BaseUnitState, ESFlags, FlagEnum, IntEnum, OperationMode } from './Enums';
+import { BaseUnitState, ESFlags, IntEnum, OperationMode } from './Enums';
 import PropertyChangedInfo from './PropertyChangedInfo';
 import ClearedStatusResponse from './Responses/ClearedStatusResponse';
 import DateTimeResponse from './Responses/DateTimeResponse';
@@ -35,7 +35,6 @@ import EventLogResponse from './Responses/EventLogResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
-import exp = require('constants');
 import DeviceEvent from './DeviceEvent';
 
 jest.mock('./Client');
@@ -121,7 +120,7 @@ describe('BaseUnit', () => {
       expect(executeSpy).toHaveBeenNthCalledWith(1, expect.any(GetDeviceCommand));
     });
 
-    test('executes change command and calls device.handleResponse ', async () => {
+    test('executes change command and calls device.handleResponse', async () => {
       executeSpy
         .mockResolvedValueOnce(new DeviceInfoResponse('ib0050f01a7a0010e41102141000005b05'))
         .mockResolvedValueOnce(new DeviceChangedResponse('ibs0511021410'));
@@ -193,7 +192,7 @@ describe('BaseUnit', () => {
     test('with result', async () => {
       executeSpy.mockResolvedValue(new DateTimeResponse('dt86042071200'));
 
-      await expect(baseUnit.getDatetime()).resolves.toEqual('1986-04-20T12:00:00.000');
+      await expect(baseUnit.getDatetime()).resolves.toBe('1986-04-20T12:00:00.000');
       expect(executeSpy).toHaveBeenNthCalledWith(1, new GetDateTimeCommand());
     });
   });
@@ -239,15 +238,15 @@ describe('BaseUnit', () => {
     baseUnit['isConnected'] = false;
     baseUnit['handleConnectionMade']();
 
-    expect(baseUnit.isConnected).toEqual(true);
+    expect(baseUnit.isConnected).toBe(true);
     expect(baseUnit['getInitialState']).toHaveBeenCalled();
   });
 
   test('handleConnectionLost', () => {
     baseUnit['isConnected'] = true;
-    baseUnit['handleConnectionLost'](false);
+    baseUnit['handleConnectionLost']();
 
-    expect(baseUnit.isConnected).toEqual(false);
+    expect(baseUnit.isConnected).toBe(false);
   });
 
   test('getInitialState', async () => {
@@ -373,19 +372,12 @@ describe('BaseUnit', () => {
 
   describe('handleDeviceEvent', () => {
     let device: Device;
-    let operationModeSpy: jest.SpyInstance;
-    let stateValueSpy: jest.SpyInstance;
-    let onEventSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      operationModeSpy = jest.spyOn(BaseUnit.prototype, 'operationMode', 'set')
-      stateValueSpy = jest.spyOn(BaseUnit.prototype, 'stateValue', 'set')
       baseUnit.onEvent = jest.fn();
-      onEventSpy = jest.spyOn(baseUnit, 'onEvent');
     });
 
     test('dont call device.handleDeviceEvent if device is missing from the device list', () => {
-
       baseUnit['handleDeviceEvent'](new DeviceEvent('MINPIC=0000000000000000000000'));
 
       expect(log4js.getLogger().warn).toHaveBeenCalledWith('Event for device not in our collection: Id: 000000');
@@ -456,23 +448,23 @@ describe('BaseUnit', () => {
   describe('handleResponse', () => {
     test('handles ROMVersionResponse', () => {
       baseUnit['handleResponse'](new ROMVersionResponse('vn1foo2bar'));
-      expect(baseUnit['ROMVersion']).toEqual('1foo2bar');
+      expect(baseUnit['ROMVersion']).toBe('1foo2bar');
     });
 
     test('handles OpModeResponse', () => {
       baseUnit['handleResponse'](new OpModeResponse('n0s0'));
       expect(baseUnit['operationMode']).toEqual(new IntEnum(OperationMode, OperationMode.Disarm));
-      expect(baseUnit['stateValue']).toEqual(0);
+      expect(baseUnit['stateValue']).toBe(0);
     });
 
     test('handles ExitDelayResponse', () => {
       baseUnit['handleResponse'](new ExitDelayResponse('l0s05'));
-      expect(baseUnit['exitDelay']).toEqual(5);
+      expect(baseUnit['exitDelay']).toBe(5);
     });
 
     test('handles EntryDelayResponse', () => {
       baseUnit['handleResponse'](new EntryDelayResponse('l1s06'));
-      expect(baseUnit['entryDelay']).toEqual(6);
+      expect(baseUnit['entryDelay']).toBe(6);
     });
 
     describe('handles DateTimeResponse', () => {
@@ -503,7 +495,7 @@ describe('BaseUnit', () => {
           expect(baseUnit['devices'].get(15735418)).toEqual(expect.any(Device));
         });
 
-        test('calls onDeviceAdded ', () => {
+        test('calls onDeviceAdded', () => {
           baseUnit['handleResponse'](response);
           expect(baseUnit['devices'].get(15735418)).toEqual(expect.any(Device));
 
@@ -582,7 +574,7 @@ describe('BaseUnit', () => {
     test('logs errors when execute are failing', async () => {
       executeSpy.mockRejectedValue('');
 
-      const response = await baseUnit['executeRetry'](command, 'FooBar');
+      await baseUnit['executeRetry'](command, 'FooBar');
       expect(log4js.getLogger().error).toHaveBeenCalledTimes(3);
     });
   });

@@ -9,8 +9,8 @@ describe('ExitDelayResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(true);
-      expect(response.exitDelay).toEqual(5);
+      expect(response.wasSet).toBe(true);
+      expect(response.exitDelay).toBe(5);
       expect(response.commandName).toEqual(CMD_EXIT_DELAY);
     });
   });
@@ -22,9 +22,9 @@ describe('ExitDelayResponse', () => {
     });
 
     test('constructor', () => {
-      expect(response.wasSet).toEqual(false);
-      expect(response.exitDelay).toEqual(5);
-      expect(response.commandName).toEqual(CMD_EXIT_DELAY);
+      expect(response.wasSet).toBe(false);
+      expect(response.exitDelay).toBe(5);
+      expect(response.commandName).toBe(CMD_EXIT_DELAY);
     });
   });
 });

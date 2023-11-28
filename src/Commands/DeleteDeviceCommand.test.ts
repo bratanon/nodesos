@@ -10,7 +10,7 @@ describe('DeleteDeviceCommand', () => {
 
   test('constructor', () => {
     expect(command.deviceCategory).toEqual(DC_BURGLAR);
-    expect(command.index).toEqual(1);
+    expect(command.index).toBe(1);
   });
 
   test('action', () => {
@@ -18,7 +18,7 @@ describe('DeleteDeviceCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual('01');
+    expect(command.args).toBe('01');
   });
 
   test('name', () => {

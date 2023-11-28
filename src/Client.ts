@@ -55,7 +55,7 @@ class Client extends Protocol {
   async close(): Promise<void> {
     this.socket.end();
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.socket.once('close', () => {
         resolve();
       });

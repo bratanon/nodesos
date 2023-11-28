@@ -18,14 +18,14 @@ describe('Command', () => {
   });
 
   test('args', () => {
-    expect(command.args).toEqual('');
+    expect(command.args).toBe('');
   });
 
   test('format', () => {
-    expect(command.format()).toEqual('!CMD-NAME&');
+    expect(command.format()).toBe('!CMD-NAME&');
   });
 
   test('format with password', () => {
-    expect(command.format('foobar')).toEqual('!CMD-NAMEfoobar&');
+    expect(command.format('foobar')).toBe('!CMD-NAMEfoobar&');
   });
 })
