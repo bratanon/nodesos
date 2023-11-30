@@ -1,9 +1,7 @@
+import EventEmitter from 'events';
 import * as log4js from 'log4js';
 import { Socket } from 'net';
-import ConnectionError from './Errors/ConnectionError';
-import CommandTimeoutError from './Errors/CommandTimeoutError';
 import Command from './Command';
-
 import {
   ACTION_ADD,
   ACTION_DEL,
@@ -25,22 +23,23 @@ import {
 } from './Const';
 import ContactID from './ContactId';
 import DeviceEvent from './DeviceEvent';
+import CommandTimeoutError from './Errors/CommandTimeoutError';
+import ConnectionError from './Errors/ConnectionError';
 import Response from './Response';
 import ClearedStatusResponse from './Responses/ClearedStatusResponse';
 import DateTimeResponse from './Responses/DateTimeResponse';
+import DeviceAddedResponse from './Responses/DeviceAddedResponse';
 import DeviceAddingResponse from './Responses/DeviceAddingResponse';
 import DeviceChangedResponse from './Responses/DeviceChangedResponse';
 import DeviceDeletedResponse from './Responses/DeviceDeletedResponse';
+import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceNotFoundResponse from './Responses/DeviceNotFoundResponse';
 import EntryDelayResponse from './Responses/EntryDelayResponse';
 import EventLogNotFoundResponse from './Responses/EventLogNotFoundResponse';
 import EventLogResponse from './Responses/EventLogResponse';
-import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
-import DeviceAddedResponse from './Responses/DeviceAddedResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
-import EventEmitter from 'events';
 
 const logger = log4js.getLogger();
 
@@ -72,7 +71,7 @@ export abstract class Protocol {
    */
   private _isConnected: boolean = false;
 
-  private recv_buffer: string = "";
+  private recv_buffer: string = '';
 
   protected executing: Record<string, State> = {};
 
@@ -215,7 +214,7 @@ export abstract class Protocol {
 
     // Don't log baseunit heartbeats for now.
     if ('\n(1ac3181602005006)\r\n' !== recv_chars.replaceAll('\n', '\\n').replaceAll('\r', '\\r')) {
-      logger.debug("DataReceived:", recv_chars.replaceAll('\n', '\\n').replaceAll('\r', '\\r'));
+      logger.debug('DataReceived:', recv_chars.replaceAll('\n', '\\n').replaceAll('\r', '\\r'));
     }
 
     // Data received will have CR/LF somewhat randomly at either the start or end
@@ -245,7 +244,7 @@ export abstract class Protocol {
         try {
           response = this.parse(line);
         } catch (error) {
-          logger.error("Failed to parse response", error);
+          logger.error('Failed to parse response', error);
           continue;
         }
 
@@ -263,15 +262,14 @@ export abstract class Protocol {
             this.onResponse(response);
           }
         }
-      }
-      // Handle device events; eg. sensor triggered, low battery, etc...
-      else if (line.startsWith('MINPIC=')) {
+      } else if (line.startsWith('MINPIC=')) {
+        // Handle device events; eg. sensor triggered, low battery, etc...
         let device_event;
 
         try {
           device_event = new DeviceEvent(line);
         } catch (error) {
-          logger.error("Failed to parse device event", error);
+          logger.error('Failed to parse device event', error);
         }
 
         logger.debug(device_event);
@@ -279,14 +277,13 @@ export abstract class Protocol {
         if (this.onDeviceEvent && device_event) {
           this.onDeviceEvent(device_event);
         }
-      }
-      // Ademco ® Contact ID protocol
-      else if (line.startsWith('(') && line.endsWith(')')) {
+      } else if (line.startsWith('(') && line.endsWith(')')) {
+        // Ademco ® Contact ID protocol
         let contact_id;
         try {
-          contact_id = new ContactID(line.substring(1, line.length - 1))
+          contact_id = new ContactID(line.substring(1, line.length - 1));
         } catch (error) {
-          logger.error("Failed to parse ContactID: ", error);
+          logger.error('Failed to parse ContactID: ', error);
         }
 
         logger.debug(contact_id);
@@ -294,18 +291,18 @@ export abstract class Protocol {
         if (this.onContactId && contact_id) {
           this.onContactId(contact_id);
         }
-      }
+      } /* eslint-disable-line brace-style */
       // Events from devices that haven't been enrolled, as well as a
       // display event from the base unit providing details to be shown.
       // Ignoring them as we have no interest in either.
-      /* eslint-disable-next-line no-empty */
+      /* eslint-disable-next-line no-empty, brace-style */
       else if (line.startsWith('XINPIC=')) {}
       // New sensor log entry; superfluous given device events already
       // provide us with this information, so just ignore them
-      /* eslint-disable-next-line no-empty */
+      /* eslint-disable-next-line no-empty, brace-style */
       else if (line.startsWith('[' + CMD_SENSOR_LOG) && line.endsWith(']')) {}
       // Failure to trigger an X10 switch
-      /* eslint-disable-next-line no-empty */
+      /* eslint-disable-next-line no-empty, brace-style */
       else if (line === 'X10 ERR') {}
       // Any unrecognised messages; ignore them too...
       /* eslint-disable-next-line no-empty */
@@ -318,74 +315,50 @@ export abstract class Protocol {
     text = text.substring(1, text.length - 1).toLowerCase();
 
     // No-op; can just ignore these
-    if (!text) {
-      return null;
-    }
+    if (!text) { return null; }
 
     if (text.startsWith(CMD_DATETIME)) {
       return new DateTimeResponse(text);
-    }
-
-    else if (text.startsWith(CMD_OPMODE)) {
+    } else if (text.startsWith(CMD_OPMODE)) {
       return new OpModeResponse(text);
-    }
-
-    else if (text.startsWith(CMD_DEVBYIDX_PREFIX)) {
+    } else if (text.startsWith(CMD_DEVBYIDX_PREFIX)) {
       if (RESPONSE_ERROR === text.slice(2) || text.slice(2, 4) === '00') {
         return new DeviceNotFoundResponse(text);
       }
       return new DeviceInfoResponse(text);
-    }
-
-    else if (text.startsWith(CMD_DEVICE_PREFIX)) {
+    } else if (text.startsWith(CMD_DEVICE_PREFIX)) {
       const action = [ACTION_ADD, ACTION_DEL, ACTION_SET].find(a => a === text.slice(2, 3)) || ACTION_NONE;
       const args = text.slice(2 + action.length);
 
       if (RESPONSE_ERROR === args) {
         return new DeviceNotFoundResponse(text);
-      }
-      else if (action === ACTION_ADD) {
+      } else if (action === ACTION_ADD) {
         if (!args) {
           return new DeviceAddingResponse(text);
         }
         return new DeviceAddedResponse(text);
-      }
-      else if (action === ACTION_SET) {
+      } else if (action === ACTION_SET) {
         return new DeviceChangedResponse(text);
-      }
-      else if (action === ACTION_DEL) {
+      } else if (action === ACTION_DEL) {
         return new DeviceDeletedResponse(text);
-      }
-      else {
+      } else {
         return new DeviceInfoResponse(text);
       }
-    }
-
-    else if (text.startsWith(CMD_CLEAR_STATUS)) {
+    } else if (text.startsWith(CMD_CLEAR_STATUS)) {
       return new ClearedStatusResponse();
-    }
-
-    else if (text.startsWith(CMD_ROMVER)) {
+    } else if (text.startsWith(CMD_ROMVER)) {
       return new ROMVersionResponse(text);
-    }
-
-    else if (text.startsWith(CMD_EXIT_DELAY)) {
+    } else if (text.startsWith(CMD_EXIT_DELAY)) {
       return new ExitDelayResponse(text);
-    }
-
-    else if (text.startsWith(CMD_ENTRY_DELAY)) {
+    } else if (text.startsWith(CMD_ENTRY_DELAY)) {
       return new EntryDelayResponse(text);
-    }
-
-    else if (text.startsWith(CMD_EVENT_LOG)) {
+    } else if (text.startsWith(CMD_EVENT_LOG)) {
       if (RESPONSE_ERROR === text.slice(2)) {
         return new EventLogNotFoundResponse();
       }
       return new EventLogResponse(text);
-    }
-
-    else {
-      throw new Error("Response not recognised: " + text);
+    } else {
+      throw new Error(`Response not recognised: ${text}`);
     }
   }
 
@@ -400,12 +373,12 @@ export abstract class Protocol {
    */
   async execute<R extends Response>(command: Command, password: string = '', timeout: number = Protocol.EXECUTE_TIMEOUT_SECS): Promise<R> {
     if (!this._isConnected) {
-      throw new ConnectionError("Client is not connected to the server");
+      throw new ConnectionError('Client is not connected to the server');
     }
 
     const state = {
       'command': command,
-      'event': new EventEmitter()
+      'event': new EventEmitter(),
     } satisfies State;
 
     this.executing[command.name] = state;
@@ -422,7 +395,7 @@ export abstract class Protocol {
         resolve(data);
       });
     }).finally(() => {
-      logger.debug(`Deleting command: ${command.name}`)
+      logger.debug(`Deleting command: ${command.name}`);
       delete this.executing[command.name];
     });
   }

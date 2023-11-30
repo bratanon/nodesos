@@ -1,6 +1,6 @@
+import Command from '../Command';
 import { ACTION_ADD, CMD_DEVICE_PREFIX } from '../Const';
 import DeviceCategory from '../DeviceCategory';
-import Command from '../Command';
 
 /**
  * Enroll new device on the LifeSOS base unit.
@@ -14,7 +14,7 @@ class AddDeviceCommand extends Command {
   constructor(deviceCategory: DeviceCategory) {
     super();
 
-    this.deviceCategory = deviceCategory
+    this.deviceCategory = deviceCategory;
   }
 
   /**

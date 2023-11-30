@@ -1,5 +1,5 @@
+import { ACTION_SET, CMD_EXIT_DELAY } from '../Const';
 import SetExitDelayCommand from './SetExitDelayCommand';
-import { ACTION_SET, CMD_EXIT_DELAY, } from '../Const';
 
 describe('SetExitDelayCommand', () => {
   let command: SetExitDelayCommand;
@@ -26,7 +26,7 @@ describe('SetExitDelayCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toBe("05");
+    expect(command.args).toBe('05');
   });
 
   test('name', () => {

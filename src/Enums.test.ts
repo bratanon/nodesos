@@ -34,4 +34,4 @@ describe('FlagEnum', () => {
     expect(subject.has(TestFlags.Bar)).toBe(true);
     expect(subject.has(TestFlags.Qux)).toBe(false);
   });
-})
+});

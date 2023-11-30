@@ -1,5 +1,5 @@
-import { ACTION_GET, CMD_ROMVER } from '../Const';
 import Command from '../Command';
+import { ACTION_GET, CMD_ROMVER } from '../Const';
 
 /**
  * Command to get the ROM version string from the LifeSOS base unit.

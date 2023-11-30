@@ -1,7 +1,7 @@
-import { ESFlags } from '../Enums';
-import ChangeDeviceCommand from './ChangeDeviceCommand';
 import { ACTION_SET, CMD_DEVICE_PREFIX } from '../Const';
 import { DC_BURGLAR } from '../DeviceCategory';
+import { ESFlags } from '../Enums';
+import ChangeDeviceCommand from './ChangeDeviceCommand';
 
 describe('ChangeDeviceCommand', () => {
   let command: ChangeDeviceCommand;

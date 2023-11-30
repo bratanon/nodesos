@@ -1,6 +1,6 @@
-import { toAsciiHex } from '../Util';
-import { ACTION_SET, CMD_EXIT_DELAY } from '../Const';
 import Command from '../Command';
+import { ACTION_SET, CMD_EXIT_DELAY } from '../Const';
+import { toAsciiHex } from '../Util';
 
 /**
  * Command to set the exit delay on the LifeSOS base unit.
@@ -16,8 +16,7 @@ class SetExitDelayCommand extends Command {
 
     if (exitDelay < 0x00) {
       throw new Error('Exit delay cannot be negative.');
-    }
-    else if(exitDelay > 0xff) {
+    } else if (exitDelay > 0xff) {
       throw new Error('Exit delay cannot exceed 255 seconds.');
     }
 

@@ -42,7 +42,7 @@ class DeviceEvent {
 
   constructor(text: string) {
     if (text.length < 19) {
-      throw new Error("Event length is invalid.");
+      throw new Error('Event length is invalid.');
     }
 
     this.eventCode = new IntEnum(DeviceEventCode, parseInt(text.slice(7, 11), 16));

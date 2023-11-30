@@ -1,6 +1,6 @@
 import { CMD_DEVICE_PREFIX } from '../Const';
-import { DCFlags, DeviceType, ESFlags, FlagEnum, IntEnum } from '../Enums';
 import { DC_BURGLAR } from '../DeviceCategory';
+import { DCFlags, DeviceType, ESFlags, FlagEnum, IntEnum } from '../Enums';
 import DeviceInfoResponse from './DeviceInfoResponse';
 
 const line = 'ib0050f01a7a0010e41102141000005b05';
@@ -22,7 +22,7 @@ describe('DeviceInfoResponse', () => {
     expect(response.RSSIBars).toBe(0);
     expect(response.RSSIDb).toBe(27);
     expect(response.zone).toBe('11-02');
-  })
+  });
 
   describe('RSSIBars', () => {
     let response: DeviceInfoResponse;
@@ -94,8 +94,8 @@ describe('DeviceInfoResponse', () => {
       response = new DeviceInfoResponse('');
       groupMock = jest.fn();
       unitMock = jest.fn();
-      Object.defineProperty(response, 'groupNumber', { get: groupMock })
-      Object.defineProperty(response, 'unitNumber', { get: unitMock })
+      Object.defineProperty(response, 'groupNumber', { get: groupMock });
+      Object.defineProperty(response, 'unitNumber', { get: unitMock });
     });
 
     test('returns 00-00', () => {
@@ -120,8 +120,8 @@ describe('DeviceInfoResponse', () => {
       response = new DeviceInfoResponse('');
       typeMock = jest.fn();
       statusMock = jest.fn();
-      Object.defineProperty(response, 'deviceType', { get: typeMock })
-      Object.defineProperty(response, 'currentStatus', { get: statusMock })
+      Object.defineProperty(response, 'deviceType', { get: typeMock });
+      Object.defineProperty(response, 'currentStatus', { get: statusMock });
     });
 
     test('returns null', () => {

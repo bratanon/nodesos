@@ -1,5 +1,5 @@
-import { ACTION_NONE } from './Const';
 import Command from './Command';
+import { ACTION_NONE } from './Const';
 
 class TestCommand extends Command {
   get name(): string {
@@ -28,4 +28,4 @@ describe('Command', () => {
   test('format with password', () => {
     expect(command.format('foobar')).toBe('!CMD-NAMEfoobar&');
   });
-})
+});

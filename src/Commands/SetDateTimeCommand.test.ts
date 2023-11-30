@@ -1,6 +1,6 @@
 import { DateTime, Settings } from 'luxon';
-import SetDateTimeCommand from './SetDateTimeCommand';
 import { ACTION_SET, CMD_DATETIME } from '../Const';
+import SetDateTimeCommand from './SetDateTimeCommand';
 
 describe('SetDateTimeCommand', () => {
   let command: SetDateTimeCommand;

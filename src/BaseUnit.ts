@@ -1,7 +1,6 @@
 import * as log4js from 'log4js';
 import { DateTime } from 'luxon';
-import { sprintf } from 'sprintf-js'
-import EventLogNotFoundResponse from './Responses/EventLogNotFoundResponse';
+import { sprintf } from 'sprintf-js';
 import Client from './Client';
 import Command from './Command';
 import AddDeviceCommand from './Commands/AddDeviceCommand';
@@ -32,6 +31,7 @@ import {
   IntEnum,
   OperationMode,
 } from './Enums';
+import PropertyChangedInfo from './PropertyChangedInfo';
 import Response from './Response';
 import DateTimeResponse from './Responses/DateTimeResponse';
 import DeviceAddedResponse from './Responses/DeviceAddedResponse';
@@ -40,11 +40,11 @@ import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceNotFoundResponse from './Responses/DeviceNotFoundResponse';
 import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
 import EntryDelayResponse from './Responses/EntryDelayResponse';
+import EventLogNotFoundResponse from './Responses/EventLogNotFoundResponse';
 import EventLogResponse from './Responses/EventLogResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
-import PropertyChangedInfo from './PropertyChangedInfo';
 
 const logger = log4js.getLogger();
 
@@ -199,7 +199,7 @@ export class BaseUnit {
    * Start monitoring the base unit.
    */
   start() {
-    logger.debug("Connecting to %s:%s", this.protocol.host, this.protocol.port)
+    logger.debug('Connecting to %s:%s', this.protocol.host, this.protocol.port);
     return this.protocol.open();
   }
 
@@ -253,13 +253,13 @@ export class BaseUnit {
       return;
     }
 
-    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber))
+    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber));
 
     if (getDeviceResponse instanceof DeviceNotFoundResponse) {
       throw new Error('Device to be changed was not found');
     }
 
-    const changeResponse = await this.protocol.execute<DeviceSettingsResponse>(new ChangeDeviceCommand(device.category, getDeviceResponse.index!, groupNumber, unitNumber, enableStatus))
+    const changeResponse = await this.protocol.execute<DeviceSettingsResponse>(new ChangeDeviceCommand(device.category, getDeviceResponse.index!, groupNumber, unitNumber, enableStatus));
     device.handleResponse(changeResponse);
   }
 
@@ -278,7 +278,7 @@ export class BaseUnit {
       return;
     }
 
-    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber))
+    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber));
 
     if (getDeviceResponse instanceof DeviceNotFoundResponse) {
       throw new Error('Device to be deleted was not found');
@@ -291,7 +291,7 @@ export class BaseUnit {
       try {
         this.onDeviceDeleted(device);
       } catch (error) {
-        logger.error("Unhandled exception in onDeviceDeleted callback");
+        logger.error('Unhandled exception in onDeviceDeleted callback');
       }
     }
   }
@@ -300,7 +300,7 @@ export class BaseUnit {
    * Get the date/time on the base unit.
    */
   async getDatetime() {
-    const response = await this.protocol.execute<DateTimeResponse>(new GetDateTimeCommand())
+    const response = await this.protocol.execute<DateTimeResponse>(new GetDateTimeCommand());
     return response.remoteDatetime;
   }
 
@@ -354,7 +354,7 @@ export class BaseUnit {
   }
 
   private async handleConnectionMade() {
-    logger.debug("Connected successfully");
+    logger.debug('Connected successfully');
     this.isConnected = true;
 
     // Get initial state info and find devices
@@ -364,13 +364,13 @@ export class BaseUnit {
   private handleConnectionLost() {
     // When we lose connection as a Client, schedule reconnect attempt
     //logger.error("Connection was lost. Will attempt to reconnect in %s seconds")
-    logger.error("Connection was lost.")
+    logger.error('Connection was lost.');
     // self._loop.call_later(self._reconnect_interval, self._reconnect)
     this.isConnected = false;
   }
 
   private async getInitialState() {
-    logger.info("Discovering devices and getting initial state...");
+    logger.info('Discovering devices and getting initial state...');
 
     // ROM version may be useful for determining features and commands
     // supported by base unit. May also help with diagnosing issues
@@ -403,12 +403,12 @@ export class BaseUnit {
       }
     }
 
-    logger.info("Device discovery completed and got initial state");
+    logger.info('Device discovery completed and got initial state');
   }
 
   private handleContactId(contactId: ContactId) {
     // Skip if event code was unrecognised
-    if (!contactId.eventCode.value){
+    if (!contactId.eventCode.value) {
       return;
     }
 
@@ -422,25 +422,21 @@ export class BaseUnit {
         contactId.eventQualifier.value === ContactIDEventQualifier.Restore)) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Away);
       this.stateValue = BaseUnitState.Away;
-    }
-    else if (contactId.eventCode.value === ContactIDEventCode.Home) {
+    } else if (contactId.eventCode.value === ContactIDEventCode.Home) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Home);
       this.stateValue = BaseUnitState.Home;
-    }
-    else if (contactId.eventCode.value === ContactIDEventCode.Disarm ||
+    } else if (contactId.eventCode.value === ContactIDEventCode.Disarm ||
       (contactId.eventCode.value === ContactIDEventCode.Away &&
         contactId.eventQualifier.value === ContactIDEventQualifier.Event)) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Disarm);
       this.stateValue = BaseUnitState.Disarm;
-    }
-    else if (contactId.eventCode.value === ContactIDEventCode.MonitorMode) {
+    } else if (contactId.eventCode.value === ContactIDEventCode.MonitorMode) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Monitor);
       this.stateValue = BaseUnitState.Monitor;
-    }
-
-    // Alarm has been triggered
-    else if (contactId.eventCode.value === ContactIDEventCategory.Alarm &&
+    } else if (contactId.eventCode.value === ContactIDEventCategory.Alarm &&
       contactId.eventQualifier.value == ContactIDEventQualifier.Event) {
+      // Alarm has been triggered
+
       // When entry delay expired, return state to Away mode
       if (this.stateValue === BaseUnitState.AwayEntryDelay) {
         this.stateValue = BaseUnitState.Away;
@@ -452,7 +448,7 @@ export class BaseUnit {
       try {
         this.onEvent?.(contactId);
       } catch (error) {
-        logger.error("Unhandled exception in onEvent callback");
+        logger.error('Unhandled exception in onEvent callback');
       }
     }
   }
@@ -483,21 +479,18 @@ export class BaseUnit {
     if (deviceEvent.eventCode.value === DeviceEventCode.Away &&
       (this.operationMode?.value !== OperationMode.Away)) {
       const hasByPass = Boolean(device.enableStatus.value & ESFlags.Bypass);
-      const hasDelay = Boolean(device.enableStatus.value & ESFlags.Delay)
+      const hasDelay = Boolean(device.enableStatus.value & ESFlags.Delay);
 
       if (device.category === DC_CONTROLLER && !hasByPass && hasDelay && (this.exitDelay ?? 0) > 0) {
         this.stateValue = BaseUnitState.AwayExitDelay;
-      }
-      else {
+      } else {
         this.operationMode = new IntEnum(OperationMode, OperationMode.Away);
         this.stateValue = BaseUnitState.Away;
       }
-    }
-    else if (deviceEvent.eventCode.value === DeviceEventCode.Home) {
+    } else if (deviceEvent.eventCode.value === DeviceEventCode.Home) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Home);
       this.stateValue = BaseUnitState.Home;
-    }
-    else if (deviceEvent.eventCode.value === DeviceEventCode.Disarm) {
+    } else if (deviceEvent.eventCode.value === DeviceEventCode.Disarm) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Disarm);
       this.stateValue = BaseUnitState.Disarm;
     }
@@ -525,27 +518,22 @@ export class BaseUnit {
     // Update any properties of the base unit
     if (response instanceof ROMVersionResponse) {
       this.ROMVersion = response.version;
-    }
-    else if (response instanceof OpModeResponse) {
+    } else if (response instanceof OpModeResponse) {
       this.operationMode = response.operationMode;
       this.stateValue = response.operationMode.value;
-    }
-    else if (response instanceof ExitDelayResponse) {
+    } else if (response instanceof ExitDelayResponse) {
       this.exitDelay = response.exitDelay;
-    }
-    else if (response instanceof EntryDelayResponse) {
+    } else if (response instanceof EntryDelayResponse) {
       this.entryDelay = response.entryDelay;
-    }
-    else if (response instanceof DateTimeResponse) {
+    } else if (response instanceof DateTimeResponse) {
       logger.info(
         sprintf(
-          "Remote date/time %s %s",
-          response.wasSet ? 'was set to': 'is',
+          'Remote date/time %s %s',
+          response.wasSet ? 'was set to' : 'is',
           response.remoteDatetime
         ),
       );
-    }
-    else if (response instanceof DeviceInfoResponse) {
+    } else if (response instanceof DeviceInfoResponse) {
       // Add / Update a device
       const device = this.devices.get(response.deviceId);
 
@@ -559,12 +547,11 @@ export class BaseUnit {
           try {
             this.onDeviceAdded(newDevice);
           } catch (error) {
-            logger.error("Unhandled exception in onDeviceAdded callback");
+            logger.error('Unhandled exception in onDeviceAdded callback');
           }
         }
       }
-    }
-    else if (response instanceof DeviceAddedResponse) {
+    } else if (response instanceof DeviceAddedResponse) {
       // New device enrolled; the info is insufficient, so we'll need
       // to issue a command to get the full device info
       this.executeRetry(new GetDeviceByIndexCommand(response.deviceCategory, response.index),
@@ -608,7 +595,7 @@ export class BaseUnit {
       try {
         this.onPropertiesChanged(changedProp);
       } catch (error) {
-        logger.error("Unhandled exception in onPropertiesChanged callback");
+        logger.error('Unhandled exception in onPropertiesChanged callback');
       }
     }
   }

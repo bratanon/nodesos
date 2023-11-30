@@ -1,18 +1,17 @@
 import * as log4js from 'log4js';
-import PropertyChangedInfo from './PropertyChangedInfo';
 import DeviceCategory from './DeviceCategory';
+import DeviceEvent from './DeviceEvent';
 import { DCFlags, DeviceEventCode, DeviceType, ESFlags, FlagEnum, IntEnum } from './Enums';
+import PropertyChangedInfo from './PropertyChangedInfo';
 import Response from './Response';
 import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
-import DeviceEvent from './DeviceEvent';
 
 const logger = log4js.getLogger();
 
 /**
  * Represents a device that has been enrolled on the base unit.
  */
-
 class Device {
   private readonly _category: DeviceCategory;
   private readonly _characteristics: FlagEnum<typeof DCFlags>;
@@ -26,7 +25,6 @@ class Device {
   private readonly _type?: IntEnum<typeof DeviceType>;
   private _unitNumber: number;
   private _zone: string;
-
 
   /**
    * Called when an event occurs.
@@ -123,7 +121,7 @@ class Device {
   /**
    * Received Signal Strength Indication, from 0 to 4 bars.
    */
-  get rssiBars(){
+  get rssiBars() {
     return this._rssiBars;
   }
 
@@ -192,7 +190,7 @@ class Device {
       try {
         this.onEvent(this, deviceEvent.eventCode.value as DeviceEventCode);
       } catch (error) {
-        logger.error("Unhandled exception in onEvent callback");
+        logger.error('Unhandled exception in onEvent callback');
       }
     }
   }
@@ -228,7 +226,7 @@ class Device {
       try {
         this.onPropertiesChanged(this, changedProp);
       } catch (error) {
-        logger.error("Unhandled exception in onPropertiesChanged callback");
+        logger.error('Unhandled exception in onPropertiesChanged callback');
       }
     }
   }

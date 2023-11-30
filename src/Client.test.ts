@@ -1,39 +1,39 @@
 import Client from './Client';
 
 describe('Client', () => {
+  let client: Client;
+
+  beforeEach(() => {
+    client = new Client(8080, '120.0.0.1');
+    client.socket.connect = jest.fn();
+  });
+
   test('constructor', () => {
-    const client = new Client(8080);
     expect(client.port).toBe(8080);
+    expect(client.host).toBe('120.0.0.1');
   });
 
   describe('open', () => {
-    test('success', (done) => {
-      const client = new Client(8080);
-      client.socket.connect = jest.fn();
-
-      client.open().then(done);
-
+    test('success', async () => {
+      const connectionPromise = client.open();
       client.socket.emit('connect');
+
+      await expect(connectionPromise).resolves.toBeUndefined();
     });
 
-    test('failure', (done) => {
-      const client = new Client(1324);
-      client.socket.connect = jest.fn();
+    test('failure', async () => {
+      const connectionPromise = client.open();
+      client.socket.emit('error');
 
-      client.open().catch(() => done());
-
-      client.socket.emit('error', new Error());
+      await expect(connectionPromise).rejects.toBeUndefined();
     });
   });
 
-  test('close', (done) => {
-    const client = new Client(8080);
-    client.socket.connect = jest.fn();
-
-    client.close().then(() => done());
-
+  test('close', async () => {
+    client.socket.end = jest.fn();
+    const closePromise = client.close();
     client.socket.emit('close');
+
+    await expect(closePromise).resolves.toBeUndefined();
   });
 });
-
-

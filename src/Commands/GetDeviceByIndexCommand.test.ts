@@ -1,6 +1,6 @@
-import GetDeviceByIndexCommand from './GetDeviceByIndexCommand';
 import { ACTION_GET, CMD_DEVBYIDX_PREFIX } from '../Const';
 import { DC_BURGLAR } from '../DeviceCategory';
+import GetDeviceByIndexCommand from './GetDeviceByIndexCommand';
 
 describe('GetDeviceByIndexCommand', () => {
   let command: GetDeviceByIndexCommand;

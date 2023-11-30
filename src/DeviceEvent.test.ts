@@ -1,5 +1,5 @@
-import { DCFlags, DeviceEventCode, DeviceType, FlagEnum, IntEnum } from './Enums';
 import DeviceEvent from './DeviceEvent';
+import { DCFlags, DeviceEventCode, DeviceType, FlagEnum, IntEnum } from './Enums';
 
 const line = 'MINPIC=0a404020fccd00109a4fff';
 describe('Device Event', () => {

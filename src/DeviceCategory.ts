@@ -64,7 +64,7 @@ export const DC_ALL = [
   DC_FIRE,
   DC_MEDICAL,
   DC_SPECIAL,
-  DC_BASEUNIT
+  DC_BASEUNIT,
 ];
 
 // Dictionary of all device categories, for lookup using the code

@@ -1,5 +1,5 @@
-import GetEntryDelayCommand from './GetEntryDelayCommand';
 import { ACTION_GET, CMD_ENTRY_DELAY } from '../Const';
+import GetEntryDelayCommand from './GetEntryDelayCommand';
 
 describe('GetEntryDelayCommand', () => {
   let command: GetEntryDelayCommand;

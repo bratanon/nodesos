@@ -1,6 +1,6 @@
-import { ContactIDEventCategory, ContactIDEventCode, ContactIDEventQualifier, IntEnum } from './Enums';
-import { DC_BASEUNIT, DC_BURGLAR } from './DeviceCategory';
 import ContactId from './ContactId';
+import { DC_BASEUNIT, DC_BURGLAR } from './DeviceCategory';
+import { ContactIDEventCategory, ContactIDEventCode, ContactIDEventQualifier, IntEnum } from './Enums';
 
 describe('ContactID', () => {
   describe('constructor', () => {
@@ -67,9 +67,7 @@ describe('ContactID', () => {
     });
     test('Not baseunit', () => {
       const response = new ContactId('1ac318138403110e');
-      expect(response.zone).toBe('03-10')
+      expect(response.zone).toBe('03-10');
     });
   });
 });
-
-

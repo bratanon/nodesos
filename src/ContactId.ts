@@ -67,7 +67,7 @@ class ContactId {
 
   constructor(text: string) {
     if (text.length !== 16) {
-      throw new Error("ContactID message length is invalid.");
+      throw new Error('ContactID message length is invalid.');
     }
 
     // Verify checksum
@@ -78,7 +78,7 @@ class ContactId {
     }
 
     if (checkVal % 15 !== 0) {
-      throw new Error("ContactID message checksum failure.");
+      throw new Error('ContactID message checksum failure.');
     }
 
     this.accountNumber = parseInt(text.slice(0, 4), 16);
@@ -89,7 +89,7 @@ class ContactId {
     }
 
     this.eventQualifier = new IntEnum(ContactIDEventQualifier, parseInt(text.slice(6, 7), 16));
-    this.eventCode = new IntEnum(ContactIDEventCode, parseInt(text.slice(7, 10),16));
+    this.eventCode = new IntEnum(ContactIDEventCode, parseInt(text.slice(7, 10), 16));
     const groupPartition = parseInt(text.slice(10, 12), 16);
 
     // Spec says zone/user uses next 3 digits; however LifeSOS uses the
@@ -108,7 +108,7 @@ class ContactId {
       this.unitNumber = zoneUser;
     }
 
-    this.checksum = parseInt(text.slice(15,16), 16);
+    this.checksum = parseInt(text.slice(15, 16), 16);
   }
 
   /**

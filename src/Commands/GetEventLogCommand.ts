@@ -6,7 +6,6 @@ import { toAsciiHex } from '../Util';
  * Get an entry from the event log.
  */
 class GetEventLogCommand extends Command {
-
   /**
    * Index for entry in the event log.
    */

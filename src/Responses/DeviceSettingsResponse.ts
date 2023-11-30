@@ -1,6 +1,6 @@
 import { sprintf } from 'sprintf-js';
-import { ESFlags, FlagEnum } from '../Enums';
 import DeviceCategory, { DC_ALL_LOOKUP } from '../DeviceCategory';
+import { ESFlags, FlagEnum } from '../Enums';
 import Response from '../Response';
 import { fromAsciiHex } from '../Util';
 

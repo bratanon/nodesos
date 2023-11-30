@@ -1,10 +1,11 @@
-import GetDateTimeCommand from './Commands/GetDateTimeCommand';
 import EventEmitter from 'events';
 import * as log4js from 'log4js';
 import { Socket } from 'net';
 import ClearStatusCommand from './Commands/ClearStatusCommand';
+import GetDateTimeCommand from './Commands/GetDateTimeCommand';
 import ContactID from './ContactId';
 import DeviceEvent from './DeviceEvent';
+import CommandTimeoutError from './Errors/CommandTimeoutError';
 import { Protocol, State } from './Protocol';
 import ClearedStatusResponse from './Responses/ClearedStatusResponse';
 import DateTimeResponse from './Responses/DateTimeResponse';
@@ -20,7 +21,6 @@ import EventLogResponse from './Responses/EventLogResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
-import CommandTimeoutError from './Errors/CommandTimeoutError';
 
 class ProtocolProxy extends Protocol {
 
@@ -75,7 +75,7 @@ jest.mock('log4js', () => {
       error,
       fatal,
     })),
-  }
+  };
 });
 
 describe('Protocol', () => {
@@ -226,11 +226,11 @@ describe('Protocol', () => {
       /* eslint-disable-next-line jest/no-done-callback */
       test('emits to the state event', (done) => {
         const emitSpy = jest.spyOn(state.event, 'emit');
-        state.event.once(state.command.name, () => { done() });
-        getExecutingMock.mockReturnValue({ [state.command.name]: state});
+        state.event.once(state.command.name, () => { done(); });
+        getExecutingMock.mockReturnValue({ [state.command.name]: state });
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
-        expect(emitSpy).toHaveBeenCalledWith(state.command.name, expect.any(ClearedStatusResponse))
+        expect(emitSpy).toHaveBeenCalledWith(state.command.name, expect.any(ClearedStatusResponse));
       });
 
       // test('calls onResponse without command when given a known command response but its not executing', () => {
@@ -242,7 +242,7 @@ describe('Protocol', () => {
       // });
 
       test('calls onResponse', () => {
-        getExecutingMock.mockReturnValue({ [state.command.name]: state});
+        getExecutingMock.mockReturnValue({ [state.command.name]: state });
 
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
@@ -264,7 +264,7 @@ describe('Protocol', () => {
       test('catch thrown error when response is not recognized', () => {
         protocol.handleOnData(Buffer.from('!xx&\r\n', 'ascii'));
 
-        expect(log4js.getLogger().error).toHaveBeenCalledWith('Failed to parse response', expect.any(Error))
+        expect(log4js.getLogger().error).toHaveBeenCalledWith('Failed to parse response', expect.any(Error));
       });
 
       test('calls onResponse with a DateTimeResponse', () => {
@@ -416,6 +416,6 @@ describe('Protocol', () => {
 
         await expect(protocol.execute(new GetDateTimeCommand(), '', 1)).rejects.toThrow('Client is not connected to the server');
       });
-    })
+    });
   });
 });

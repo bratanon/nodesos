@@ -1,5 +1,5 @@
+import { ACTION_SET, CMD_ENTRY_DELAY } from '../Const';
 import SetEntryDelayCommand from './SetEntryDelayCommand';
-import { ACTION_SET, CMD_ENTRY_DELAY, } from '../Const';
 
 describe('SetEntryDelayCommand', () => {
   let command: SetEntryDelayCommand;
@@ -26,7 +26,7 @@ describe('SetEntryDelayCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toBe("05");
+    expect(command.args).toBe('05');
   });
 
   test('name', () => {

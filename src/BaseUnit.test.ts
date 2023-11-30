@@ -1,17 +1,15 @@
-import DeleteDeviceCommand from './Commands/DeleteDeviceCommand';
-import DeviceDeletedResponse from './Responses/DeviceDeletedResponse';
-import DeviceChangedResponse from './Responses/DeviceChangedResponse';
-import ChangeDeviceCommand from './Commands/ChangeDeviceCommand';
-import GetDeviceCommand from './Commands/GetDeviceCommand';
 import * as log4js from 'log4js';
 import { DateTime } from 'luxon';
 import { BaseUnit } from './BaseUnit';
 import Client from './Client';
 import Command from './Command';
 import AddDeviceCommand from './Commands/AddDeviceCommand';
+import ChangeDeviceCommand from './Commands/ChangeDeviceCommand';
 import ClearStatusCommand from './Commands/ClearStatusCommand';
+import DeleteDeviceCommand from './Commands/DeleteDeviceCommand';
 import GetDateTimeCommand from './Commands/GetDateTimeCommand';
 import GetDeviceByIndexCommand from './Commands/GetDeviceByIndexCommand';
+import GetDeviceCommand from './Commands/GetDeviceCommand';
 import GetEntryDelayCommand from './Commands/GetEntryDelayCommand';
 import GetEventLogCommand from './Commands/GetEventLogCommand';
 import GetExitDelayCommand from './Commands/GetExitDelayCommand';
@@ -22,11 +20,14 @@ import SetOpModeCommand from './Commands/SetOpModeCommand';
 import ContactId from './ContactId';
 import Device from './Device';
 import { DC_ALL, DC_CONTROLLER } from './DeviceCategory';
+import DeviceEvent from './DeviceEvent';
 import { BaseUnitState, ESFlags, IntEnum, OperationMode } from './Enums';
 import PropertyChangedInfo from './PropertyChangedInfo';
 import ClearedStatusResponse from './Responses/ClearedStatusResponse';
 import DateTimeResponse from './Responses/DateTimeResponse';
 import DeviceAddedResponse from './Responses/DeviceAddedResponse';
+import DeviceChangedResponse from './Responses/DeviceChangedResponse';
+import DeviceDeletedResponse from './Responses/DeviceDeletedResponse';
 import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceNotFoundResponse from './Responses/DeviceNotFoundResponse';
 import EntryDelayResponse from './Responses/EntryDelayResponse';
@@ -35,7 +36,6 @@ import EventLogResponse from './Responses/EventLogResponse';
 import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
-import DeviceEvent from './DeviceEvent';
 
 jest.mock('./Client');
 
@@ -53,7 +53,7 @@ jest.mock('log4js', () => {
       error,
       fatal,
     })),
-  }
+  };
 });
 
 describe('BaseUnit', () => {
@@ -167,7 +167,8 @@ describe('BaseUnit', () => {
         executeSpy
           .mockResolvedValueOnce(new DeviceInfoResponse('ib0050f01a7a0010e41102141000005b05'))
           .mockResolvedValueOnce(new DeviceDeletedResponse('ibk01'));
-      })
+      });
+
       test('Calls onDeviceDeleted', async () => {
         baseUnit.onDeviceDeleted = jest.fn();
 
@@ -178,7 +179,7 @@ describe('BaseUnit', () => {
 
       test('Catches errors from onDeviceDeleted', async () => {
         baseUnit.onDeviceDeleted = jest.fn().mockImplementation(() => {
-          throw new Error()
+          throw new Error();
         });
 
         await baseUnit.deleteDevice(device.deviceId);
@@ -285,8 +286,8 @@ describe('BaseUnit', () => {
     let onEventSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      operationModeSpy = jest.spyOn(BaseUnit.prototype, 'operationMode', 'set')
-      stateValueSpy = jest.spyOn(BaseUnit.prototype, 'stateValue', 'set')
+      operationModeSpy = jest.spyOn(BaseUnit.prototype, 'operationMode', 'set');
+      stateValueSpy = jest.spyOn(BaseUnit.prototype, 'stateValue', 'set');
       baseUnit.onEvent = jest.fn();
       onEventSpy = jest.spyOn(baseUnit, 'onEvent');
     });
@@ -302,42 +303,42 @@ describe('BaseUnit', () => {
     test('when event code is Away_QuickArm', () => {
       baseUnit['handleContactId'](new ContactId('1ac3181408031107'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Away))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Away));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Away);
     });
 
     test('when event code is Away and qualifier is Restore', () => {
       baseUnit['handleContactId'](new ContactId('1ac3183400031103'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Away))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Away));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Away);
     });
 
     test('when event code is Home', () => {
       baseUnit['handleContactId'](new ContactId('1ac318157403110d'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Home))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Home));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Home);
     });
 
     test('when event code is Disarm', () => {
       baseUnit['handleContactId'](new ContactId('1ac318157303110e'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Disarm))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Disarm));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Disarm);
     });
 
     test('when event code is Away and qualifier is Event', () => {
       baseUnit['handleContactId'](new ContactId('1ac3181400031105'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Disarm))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Disarm));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Disarm);
     });
 
     test('when event code is MonitorMode', () => {
       baseUnit['handleContactId'](new ContactId('1ac318161903110d'));
 
-      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Monitor))
+      expect(operationModeSpy).toHaveBeenNthCalledWith(1, new IntEnum(OperationMode, OperationMode.Monitor));
       expect(stateValueSpy).toHaveBeenNthCalledWith(1, BaseUnitState.Monitor);
     });
 
@@ -359,7 +360,7 @@ describe('BaseUnit', () => {
 
       test('Catches errors from onEvent', () => {
         onEventSpy.mockImplementation(() => {
-          throw new Error()
+          throw new Error();
         });
 
         const contactId = new ContactId('1ac3181100031108');
@@ -470,12 +471,12 @@ describe('BaseUnit', () => {
     describe('handles DateTimeResponse', () => {
       test('get', () => {
         baseUnit['handleResponse'](new DateTimeResponse('dt86042071200'));
-        expect(log4js.getLogger().info).toHaveBeenCalledWith('Remote date/time is 1986-04-20T12:00:00.000')
+        expect(log4js.getLogger().info).toHaveBeenCalledWith('Remote date/time is 1986-04-20T12:00:00.000');
       });
 
       test('set', () => {
         baseUnit['handleResponse'](new DateTimeResponse('dts86042071200'));
-        expect(log4js.getLogger().info).toHaveBeenCalledWith('Remote date/time was set to 1986-04-20T12:00:00.000')
+        expect(log4js.getLogger().info).toHaveBeenCalledWith('Remote date/time was set to 1986-04-20T12:00:00.000');
       });
     });
 
@@ -499,12 +500,12 @@ describe('BaseUnit', () => {
           baseUnit['handleResponse'](response);
           expect(baseUnit['devices'].get(15735418)).toEqual(expect.any(Device));
 
-          expect(onDeviceAddedSpy).toHaveBeenNthCalledWith(1, expect.any(Device))
+          expect(onDeviceAddedSpy).toHaveBeenNthCalledWith(1, expect.any(Device));
         });
 
         test('Catches errors from onPropertiesChanged', () => {
           onDeviceAddedSpy.mockImplementation(() => {
-            throw new Error()
+            throw new Error();
           });
 
           baseUnit['handleResponse'](response);
@@ -514,7 +515,7 @@ describe('BaseUnit', () => {
       });
 
       test('calls devices handleResponse when device exists in device list', () => {
-        const response = new DeviceInfoResponse('ib0050f01a7a0010e41102141000005b05')
+        const response = new DeviceInfoResponse('ib0050f01a7a0010e41102141000005b05');
         const device = new Device(response);
         baseUnit.devices.set(device.deviceId, device);
         const deviceHandleResponseSpy = jest.spyOn(device, 'handleResponse');
@@ -568,7 +569,7 @@ describe('BaseUnit', () => {
       const response = await baseUnit['executeRetry'](command, 'FooBar');
       expect(executeSpy).toHaveBeenCalledWith(command);
       expect(executeSpy).toHaveBeenCalledTimes(3);
-      expect(response).toEqual(new ClearedStatusResponse())
+      expect(response).toEqual(new ClearedStatusResponse());
     });
 
     test('logs errors when execute are failing', async () => {
@@ -601,7 +602,7 @@ describe('BaseUnit', () => {
 
     test('Catches errors from onPropertiesChanged', () => {
       onPropertiesChangedSpy.mockImplementation(() => {
-        throw new Error()
+        throw new Error();
       });
 
       baseUnit['notifyChange'](new PropertyChangedInfo('foo', true, false));

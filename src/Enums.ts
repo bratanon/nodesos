@@ -15,7 +15,7 @@ abstract class EnumHelper<T extends Enum> {
     this.value = value;
   }
 
-  protected getKeys()  {
+  protected getKeys() {
     const flagNames: (keyof T)[] = [];
 
     for (const key in this.#flags) {
@@ -193,9 +193,9 @@ export const ESFlags = Object.freeze({
  * Provides context for the type of event in a Contact ID message.
  */
 export const ContactIDEventQualifier = Object.freeze({
-  Event: 0x1,    // New Event or Opening
-  Restore: 0x3,  // New Restore or Closing
-  Repeat: 0x6,   // Previously reported condition still present
+  Event: 0x1, // New Event or Opening
+  Restore: 0x3, // New Restore or Closing
+  Repeat: 0x6, // Previously reported condition still present
 } as const) satisfies {[key: string]: number};
 
 export type ContactIDEventQualifier = typeof ContactIDEventQualifier[keyof typeof ContactIDEventQualifier];

@@ -1,5 +1,5 @@
-import GetEventLogCommand from './GetEventLogCommand';
 import { ACTION_NONE, CMD_EVENT_LOG } from '../Const';
+import GetEventLogCommand from './GetEventLogCommand';
 
 describe('GetEventLogCommand', () => {
   let command: GetEventLogCommand;
@@ -16,7 +16,7 @@ describe('GetEventLogCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toBe("001");
+    expect(command.args).toBe('001');
   });
 
   test('name', () => {
@@ -24,6 +24,6 @@ describe('GetEventLogCommand', () => {
   });
 
   test('format', () => {
-    expect(command.format()).toBe("!ev001&");
+    expect(command.format()).toBe('!ev001&');
   });
 });

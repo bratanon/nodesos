@@ -1,7 +1,7 @@
-import { toAsciiHex } from '../Util';
+import Command from '../Command';
 import { ACTION_DEL, CMD_DEVICE_PREFIX } from '../Const';
 import DeviceCategory from '../DeviceCategory';
-import Command from '../Command';
+import { toAsciiHex } from '../Util';
 
 /**
  * Delete an enrolled device.
@@ -20,7 +20,7 @@ class DeleteDeviceCommand extends Command {
   constructor(deviceCategory: DeviceCategory, index: number) {
     super();
 
-    this.deviceCategory = deviceCategory
+    this.deviceCategory = deviceCategory;
     this.index = index;
   }
 
@@ -34,7 +34,7 @@ class DeleteDeviceCommand extends Command {
    * @inheritDoc
    */
   get args(): string {
-    return toAsciiHex(this.index, 2)
+    return toAsciiHex(this.index, 2);
   }
 
   /**

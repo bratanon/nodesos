@@ -1,6 +1,6 @@
-import AddDeviceCommand from './AddDeviceCommand';
 import { ACTION_ADD, CMD_DEVICE_PREFIX } from '../Const';
 import { DC_BURGLAR } from '../DeviceCategory';
+import AddDeviceCommand from './AddDeviceCommand';
 
 describe('AddDeviceCommand', () => {
   let command: AddDeviceCommand;

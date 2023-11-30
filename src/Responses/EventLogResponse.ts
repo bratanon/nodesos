@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
 import { sprintf } from 'sprintf-js';
-import { ContactIDEventCode, ContactIDEventQualifier, IntEnum } from '../Enums';
-import { fromAsciiHex } from '../Util';
-import DeviceCategory, { DC_ALL, DC_BASEUNIT } from '../DeviceCategory';
 import { CMD_EVENT_LOG } from '../Const';
+import DeviceCategory, { DC_ALL, DC_BASEUNIT } from '../DeviceCategory';
+import { ContactIDEventCode, ContactIDEventQualifier, IntEnum } from '../Enums';
 import Response from '../Response';
+import { fromAsciiHex } from '../Util';
 
 /**
  * Response that provides an entry from the event log.
@@ -63,8 +63,6 @@ class EventLogResponse extends Response {
    * Unit number the device is assigned to (within group).
    */
   readonly unitNumber?: number;
-
-
 
   constructor(text: string) {
     super();

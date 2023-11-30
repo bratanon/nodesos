@@ -1,6 +1,6 @@
-import { toAsciiHex } from '../Util';
-import { ACTION_SET, CMD_ENTRY_DELAY } from '../Const';
 import Command from '../Command';
+import { ACTION_SET, CMD_ENTRY_DELAY } from '../Const';
+import { toAsciiHex } from '../Util';
 
 /**
  * Command to set the entry delay on the LifeSOS base unit.
@@ -16,8 +16,7 @@ class SetEntryDelayCommand extends Command {
 
     if (entryDelay < 0x00) {
       throw new Error('Entry delay cannot be negative.');
-    }
-    else if(entryDelay > 0xff) {
+    } else if (entryDelay > 0xff) {
       throw new Error('Entry delay cannot exceed 255 seconds.');
     }
 

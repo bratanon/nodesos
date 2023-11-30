@@ -1,7 +1,7 @@
-import DeviceSettingsResponse from './DeviceSettingsResponse';
 import { CMD_DEVICE_PREFIX } from '../Const';
-import { ESFlags, FlagEnum } from '../Enums';
 import { DC_BURGLAR } from '../DeviceCategory';
+import { ESFlags, FlagEnum } from '../Enums';
+import DeviceSettingsResponse from './DeviceSettingsResponse';
 
 class MockedClass extends DeviceSettingsResponse {
   constructor(text: string) {
@@ -19,7 +19,7 @@ describe('DeviceSettingsResponse', () => {
     expect(response.index).toBe(5);
     expect(response.unitNumber).toBe(2);
     expect(response.zone).toBe('11-02');
-  })
+  });
 
   describe('zone', () => {
     let response: DeviceSettingsResponse;
@@ -30,8 +30,8 @@ describe('DeviceSettingsResponse', () => {
       response = new MockedClass('');
       groupMock = jest.fn();
       unitMock = jest.fn();
-      Object.defineProperty(response, 'groupNumber', { get: groupMock })
-      Object.defineProperty(response, 'unitNumber', { get: unitMock })
+      Object.defineProperty(response, 'groupNumber', { get: groupMock });
+      Object.defineProperty(response, 'unitNumber', { get: unitMock });
     });
 
     test('returns 00-00', () => {

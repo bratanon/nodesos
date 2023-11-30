@@ -77,7 +77,7 @@ describe('EventLogResponse', () => {
     });
     test('Not baseunit', () => {
       const response = new EventLogResponse('ev140060000200112201530b7');
-      expect(response.zone).toBe('60-02')
+      expect(response.zone).toBe('60-02');
     });
   });
 });

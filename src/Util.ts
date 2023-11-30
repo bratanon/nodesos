@@ -39,12 +39,12 @@ export const fromAsciiHex = (text: string): number => {
     } else if (charOrd >= 'a'.charCodeAt(0) && charOrd <= 'f'.charCodeAt(0)) {
       digit = 0xa + (charOrd - 'a'.charCodeAt(0));
     } else {
-      throw new Error("Response contains invalid character.");
+      throw new Error('Response contains invalid character.');
     }
     value = (value * 0x10) + digit;
   }
   return value;
-}
+};
 
 /**
  * Indicates if specified text contains only ascii hex characters.

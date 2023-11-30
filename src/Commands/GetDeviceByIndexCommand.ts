@@ -1,7 +1,7 @@
-import { toAsciiHex } from '../Util';
-import DeviceCategory from '../DeviceCategory';
-import { ACTION_GET, CMD_DEVBYIDX_PREFIX } from '../Const';
 import Command from '../Command';
+import { ACTION_GET, CMD_DEVBYIDX_PREFIX } from '../Const';
+import DeviceCategory from '../DeviceCategory';
+import { toAsciiHex } from '../Util';
 
 /**
  * Get a device using the specified category and index.

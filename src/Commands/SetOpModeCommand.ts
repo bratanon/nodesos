@@ -1,6 +1,6 @@
-import { OperationMode } from '../Enums';
 import Command from '../Command';
 import { ACTION_SET, CMD_OPMODE } from '../Const';
+import { OperationMode } from '../Enums';
 
 /**
  * Command to set the operation mode on the LifeSOS base unit.

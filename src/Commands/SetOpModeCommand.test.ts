@@ -1,6 +1,6 @@
+import { ACTION_SET, CMD_OPMODE } from '../Const';
 import { OperationMode } from '../Enums';
 import SetOpModeCommand from './SetOpModeCommand';
-import { ACTION_SET, CMD_OPMODE } from '../Const';
 
 describe('SetOpModeCommand', () => {
   let command: SetOpModeCommand;
@@ -13,7 +13,7 @@ describe('SetOpModeCommand', () => {
   });
 
   test('args', () => {
-    expect(command.args).toBe("0");
+    expect(command.args).toBe('0');
   });
 
   test('name', () => {

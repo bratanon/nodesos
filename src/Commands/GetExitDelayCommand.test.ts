@@ -1,5 +1,5 @@
-import GetExitDelayCommand from './GetExitDelayCommand';
 import { ACTION_GET, CMD_EXIT_DELAY } from '../Const';
+import GetExitDelayCommand from './GetExitDelayCommand';
 
 describe('GetExitDelayCommand', () => {
   let command: GetExitDelayCommand;

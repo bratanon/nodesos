@@ -1,6 +1,6 @@
-import DeleteDeviceCommand from './DeleteDeviceCommand';
 import { ACTION_DEL, CMD_DEVICE_PREFIX } from '../Const';
 import { DC_BURGLAR } from '../DeviceCategory';
+import DeleteDeviceCommand from './DeleteDeviceCommand';
 
 describe('DeleteDeviceCommand', () => {
   let command: DeleteDeviceCommand;

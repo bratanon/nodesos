@@ -1,10 +1,10 @@
 import * as log4js from 'log4js';
-import PropertyChangedInfo from './PropertyChangedInfo';
 import Device from './Device';
-import DeviceInfoResponse from './Responses/DeviceInfoResponse';
-import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
 import DeviceEvent from './DeviceEvent';
 import { DeviceEventCode, IntEnum } from './Enums';
+import PropertyChangedInfo from './PropertyChangedInfo';
+import DeviceInfoResponse from './Responses/DeviceInfoResponse';
+import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
 
 class MockedClass extends DeviceSettingsResponse {
   constructor(text: string) {
@@ -26,7 +26,7 @@ jest.mock('log4js', () => {
       error,
       fatal,
     })),
-  }
+  };
 });
 
 describe('Device', () => {

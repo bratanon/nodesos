@@ -25,20 +25,9 @@ class Client extends Protocol {
    * Opens connection to the LifeSOS ethernet interface.
    */
   async open(): Promise<void> {
-    // https://blog.logrocket.com/error-handling-node-js/
-    // const fs = require('fs');
-    // const util = require('util');
-    //
-    // const readFile = util.promisify(fs.readFile);
-    //
-    // readFile('/home/Kedar/node.txt')
-    //   .then((result) => console.log(result))
-    //   .catch((err) => console.error(err));
-
-    // @TODO: Resolve in callback? https://nodejs.org/api/util.html#util_util_promisify_original
-    this.socket.connect({ port: this.port, host: this.host });
-
     return new Promise((resolve, reject) => {
+      this.socket.connect({ port: this.port, host: this.host });
+
       this.socket.once('connect', () => {
         resolve();
       });
@@ -53,14 +42,12 @@ class Client extends Protocol {
    * Close connection to the LifeSOS ethernet interface.
    */
   async close(): Promise<void> {
-    this.socket.end();
-
     return new Promise((resolve) => {
+      this.socket.end();
+
       this.socket.once('close', () => {
         resolve();
       });
-
-      // @TODO: Handle timeout / error?
     });
   }
 }

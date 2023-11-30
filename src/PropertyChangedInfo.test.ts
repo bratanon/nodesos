@@ -6,5 +6,5 @@ describe('PropertyChangedInfo', () => {
     expect(change.name).toBe('foo');
     expect(change.oldValue).toBe(true);
     expect(change.newValue).toBe(false);
-  })
+  });
 });

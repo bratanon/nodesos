@@ -1,7 +1,7 @@
-import { toAsciiHex } from '../Util';
-import DeviceCategory from '../DeviceCategory';
-import { ACTION_GET, CMD_DEVICE_PREFIX } from '../Const';
 import Command from '../Command';
+import { ACTION_GET, CMD_DEVICE_PREFIX } from '../Const';
+import DeviceCategory from '../DeviceCategory';
+import { toAsciiHex } from '../Util';
 
 /**
  * Get a device using the specified category and zone.
@@ -28,9 +28,9 @@ class GetDeviceCommand extends Command {
     unitNumber: number
   ) {
     super();
-    this.deviceCategory = deviceCategory
-    this.groupNumber = groupNumber
-    this.unitNumber = unitNumber
+    this.deviceCategory = deviceCategory;
+    this.groupNumber = groupNumber;
+    this.unitNumber = unitNumber;
   }
 
   /**
@@ -44,7 +44,7 @@ class GetDeviceCommand extends Command {
    * @inheritDoc
    */
   get args(): string {
-    return `${toAsciiHex(this.groupNumber, 2)}${toAsciiHex(this.unitNumber, 2)}`
+    return `${toAsciiHex(this.groupNumber, 2)}${toAsciiHex(this.unitNumber, 2)}`;
   }
 
   /**

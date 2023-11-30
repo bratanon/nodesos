@@ -1,5 +1,5 @@
-import GetROMVersionCommand from './GetROMVersionCommand';
 import { ACTION_GET, CMD_ROMVER } from '../Const';
+import GetROMVersionCommand from './GetROMVersionCommand';
 
 describe('GetROMVersionCommand', () => {
   let command: GetROMVersionCommand;

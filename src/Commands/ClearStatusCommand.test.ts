@@ -1,5 +1,5 @@
-import ClearStatusCommand from './ClearStatusCommand';
 import { ACTION_NONE, CMD_CLEAR_STATUS } from '../Const';
+import ClearStatusCommand from './ClearStatusCommand';
 
 describe('ClearStatusCommand', () => {
   let command: ClearStatusCommand;

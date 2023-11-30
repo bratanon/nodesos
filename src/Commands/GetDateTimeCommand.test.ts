@@ -1,5 +1,5 @@
-import GetDateTimeCommand from './GetDateTimeCommand';
 import { ACTION_GET, CMD_DATETIME } from '../Const';
+import GetDateTimeCommand from './GetDateTimeCommand';
 
 describe('GetDateTimeCommand', () => {
   let command: GetDateTimeCommand;

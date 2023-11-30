@@ -1,5 +1,4 @@
 import * as Utils from './Util';
-
 test('toAsciiHex', () => {
   expect(Utils.toAsciiHex(0, 0)).toBe('');
   expect(Utils.toAsciiHex(0, 1)).toBe('0');
@@ -59,5 +58,3 @@ test('isAsciiHex', () => {
   expect(Utils.isAsciiHex(':;<=>?')).toBe(true);
   expect(Utils.isAsciiHex('ÅÄÖ')).toBe(false);
 });
-
-

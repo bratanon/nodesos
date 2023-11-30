@@ -1,5 +1,5 @@
-import GetOpModeCommand from './GetOpModeCommand';
 import { ACTION_GET, CMD_OPMODE } from '../Const';
+import GetOpModeCommand from './GetOpModeCommand';
 
 describe('GetOpModeCommand', () => {
   let command: GetOpModeCommand;

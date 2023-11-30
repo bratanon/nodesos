@@ -1,9 +1,9 @@
 import { sprintf } from 'sprintf-js';
-import { DCFlags, DeviceType, ESFlags, FlagEnum, IntEnum } from '../Enums';
-import { fromAsciiHex } from '../Util';
 import { CMD_DEVICE_PREFIX } from '../Const';
-import Response from '../Response';
 import DeviceCategory, { DC_ALL_LOOKUP } from '../DeviceCategory';
+import { DCFlags, DeviceType, ESFlags, FlagEnum, IntEnum } from '../Enums';
+import Response from '../Response';
+import { fromAsciiHex } from '../Util';
 
 /**
  * Response that provides information for a device, and the settings that
@@ -88,7 +88,7 @@ class DeviceInfoResponse extends Response {
       text = text.slice(2);
     }
 
-    this.deviceType = new IntEnum(DeviceType, fromAsciiHex(text.slice(0, 2)))
+    this.deviceType = new IntEnum(DeviceType, fromAsciiHex(text.slice(0, 2)));
     this.deviceId = fromAsciiHex(text.slice(2, 8));
     this.messageAttribute = fromAsciiHex(text.slice(8, 10));
     this.deviceCharacteristics = new FlagEnum(DCFlags, fromAsciiHex(text.slice(10, 12)));
