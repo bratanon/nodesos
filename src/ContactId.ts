@@ -1,18 +1,11 @@
 import { sprintf } from 'sprintf-js';
 import DeviceCategory, { DC_ALL, DC_BASEUNIT } from './DeviceCategory';
-import {
-  ContactIDEventCategory,
-  ContactIDEventCode,
-  ContactIDEventQualifier,
-  IntEnum,
-  MessageType,
-} from './Enums';
+import { ContactIDEventCategory, ContactIDEventCode, ContactIDEventQualifier, IntEnum, MessageType } from './Enums';
 
 /**
  * Represents a message using the Ademco ® Contact ID protocol.
  */
 class ContactId {
-
   /**
    * Account number identifies this alarm panel to the receiver.
    */
@@ -74,7 +67,7 @@ class ContactId {
     let checkVal = 0;
     for (const hexChar of text) {
       const checkDigit = parseInt(hexChar, 16);
-      checkVal += (checkDigit !== 0 ? checkDigit : 10);
+      checkVal += checkDigit !== 0 ? checkDigit : 10;
     }
 
     if (checkVal % 15 !== 0) {

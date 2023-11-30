@@ -16,7 +16,7 @@ class GetExitDelayCommand extends Command {
    * @inheritDoc
    */
   get name(): string {
-    return CMD_EXIT_DELAY ;
+    return CMD_EXIT_DELAY;
   }
 }
 

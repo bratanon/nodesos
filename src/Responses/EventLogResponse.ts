@@ -80,9 +80,10 @@ class EventLogResponse extends Response {
       this.unitNumber = zoneUser;
     }
     this.action = DC_ALL[fromAsciiHex(text.slice(10, 12))];
-    this.dateTime = DateTime.fromFormat(text.slice(12, 20), 'LLddHHmm').toISO({
-      includeOffset: false,
-    }) ?? undefined;
+    this.dateTime =
+      DateTime.fromFormat(text.slice(12, 20), 'LLddHHmm').toISO({
+        includeOffset: false,
+      }) ?? undefined;
     this.lastIndex = fromAsciiHex(text.slice(20, 23));
   }
 

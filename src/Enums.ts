@@ -4,7 +4,7 @@
 
 export type Enum = {
   [key: string]: number;
-}
+};
 
 abstract class EnumHelper<T extends Enum> {
   readonly #flags: T;
@@ -27,7 +27,7 @@ abstract class EnumHelper<T extends Enum> {
     return flagNames;
   }
 
-  protected getKey(): (keyof T) | undefined {
+  protected getKey(): keyof T | undefined {
     return Object.keys(this.#flags).find((key) => this.#flags[key] === this.value);
   }
 }
@@ -94,13 +94,13 @@ export const DeviceType = Object.freeze({
   RemoteSiren: 0x70,
   BaseUnit: 0x80,
   RFBell: 0x90,
-  RFSW: 0xA0,
-  RWSWOnTime: 0xA1,
-  RFSiren: 0xC0,
-  RFSirenOnTime: 0xC1,
-} as const) satisfies {[key: string]: number};
+  RFSW: 0xa0,
+  RWSWOnTime: 0xa1,
+  RFSiren: 0xc0,
+  RFSirenOnTime: 0xc1,
+} as const) satisfies { [key: string]: number };
 
-export type DeviceType = typeof DeviceType[keyof typeof DeviceType];
+export type DeviceType = (typeof DeviceType)[keyof typeof DeviceType];
 
 /**
  * Type of event raised by a device.
@@ -121,9 +121,9 @@ export const DeviceEventCode = Object.freeze({
   Tamper: 0x0a50,
   Trigger: 0x0a58,
   Panic: 0x0a60,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type DeviceEventCode = typeof DeviceEventCode[keyof typeof DeviceEventCode];
+export type DeviceEventCode = (typeof DeviceEventCode)[keyof typeof DeviceEventCode];
 
 /**
  * Mode of operation for the base unit.
@@ -133,9 +133,9 @@ export const OperationMode = Object.freeze({
   Home: 0x1,
   Away: 0x2,
   Monitor: 0x8,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type OperationMode = typeof OperationMode[keyof typeof OperationMode];
+export type OperationMode = (typeof OperationMode)[keyof typeof OperationMode];
 
 /**
  * State of the base unit.
@@ -147,9 +147,9 @@ export const BaseUnitState = Object.freeze({
   Monitor: OperationMode.Monitor,
   AwayExitDelay: 0x10,
   AwayEntryDelay: 0x11,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type BaseUnitState = typeof BaseUnitState[keyof typeof BaseUnitState];
+export type BaseUnitState = (typeof BaseUnitState)[keyof typeof BaseUnitState];
 
 /**
  * Device Characteristics flags
@@ -163,7 +163,7 @@ export const DCFlags = Object.freeze({
   Reserved_b2: 0x04,
   Reserved_b1: 0x02,
   Reserved_b0: 0x01,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
 /**
  * Enable Status flags.
@@ -187,7 +187,7 @@ export const ESFlags = Object.freeze({
   HomeAuto: 0x4,
   Reserved_b1: 0x2,
   Reserved_b0: 0x1,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
 /**
  * Provides context for the type of event in a Contact ID message.
@@ -196,9 +196,9 @@ export const ContactIDEventQualifier = Object.freeze({
   Event: 0x1, // New Event or Opening
   Restore: 0x3, // New Restore or Closing
   Repeat: 0x6, // Previously reported condition still present
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type ContactIDEventQualifier = typeof ContactIDEventQualifier[keyof typeof ContactIDEventQualifier];
+export type ContactIDEventQualifier = (typeof ContactIDEventQualifier)[keyof typeof ContactIDEventQualifier];
 
 /**
  * Category of event in a ContactID message.
@@ -211,9 +211,9 @@ export const ContactIDEventCategory = Object.freeze({
   Bypass_Disable: 0x500,
   Test_Misc: 0x600,
   Automation: 0x900,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type ContactIDEventCategory = typeof ContactIDEventCategory[keyof typeof ContactIDEventCategory];
+export type ContactIDEventCategory = (typeof ContactIDEventCategory)[keyof typeof ContactIDEventCategory];
 
 /**
  * Type of event indicated by a ContactID message.
@@ -521,13 +521,13 @@ export const ContactIDEventCode = Object.freeze({
   SwitchOnOff: 0x901,
   HighLimitOperation: 0x912,
   LowLimitOperation: 0x913,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type ContactIDEventCode = typeof ContactIDEventCode[keyof typeof ContactIDEventCode];
+export type ContactIDEventCode = (typeof ContactIDEventCode)[keyof typeof ContactIDEventCode];
 
 export const MessageType = Object.freeze({
   Preferred: 0x18,
   Optional: 0x98,
-} as const) satisfies {[key: string]: number};
+} as const) satisfies { [key: string]: number };
 
-export type MessageType = typeof MessageType[keyof typeof MessageType];
+export type MessageType = (typeof MessageType)[keyof typeof MessageType];

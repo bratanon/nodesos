@@ -4,9 +4,8 @@ import { ACTION_NONE, MARKER_END, MARKER_START } from './Const';
  * Represents a command to be issued to the LifeSOS base unit.
  */
 abstract class Command {
-
   /**
-   * Provides the action to perform; eg. get, set.
+   * Provides the action to perform; e.g. get, set.
    */
   get action(): string {
     return ACTION_NONE;
@@ -25,12 +24,7 @@ abstract class Command {
   abstract get name(): string;
 
   format(password: string = '') {
-    return MARKER_START +
-      this.name +
-      this.action +
-      this.args +
-      password +
-      MARKER_END;
+    return MARKER_START + this.name + this.action + this.args + password + MARKER_END;
   }
 }
 

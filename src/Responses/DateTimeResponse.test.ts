@@ -15,8 +15,9 @@ describe('DateTimeResponse', () => {
     });
 
     test('fails when text length is not exactly 11', () => {
-      expect(() => new DateTimeResponse('dts860420712'))
-        .toThrow('Date/Time response length is invalid. Got \'860420712\'');
+      expect(() => new DateTimeResponse('dts860420712')).toThrow(
+        "Date/Time response length is invalid. Got '860420712'",
+      );
     });
   });
 
@@ -33,8 +34,9 @@ describe('DateTimeResponse', () => {
     });
 
     test('fails when text length is not exactly 11', () => {
-      expect(() => new DateTimeResponse('dt860420712'))
-        .toThrow('Date/Time response length is invalid. Got \'860420712\'');
+      expect(() => new DateTimeResponse('dt860420712')).toThrow(
+        "Date/Time response length is invalid. Got '860420712'",
+      );
     });
   });
 });

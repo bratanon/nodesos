@@ -58,14 +58,7 @@ export const DC_SPECIAL = new DeviceCategory({ code: 'e', description: 'Special'
 export const DC_BASEUNIT = new DeviceCategory({ code: 'z', description: 'Base Unit', maxDevices: null });
 
 // List of all device categories
-export const DC_ALL = [
-  DC_CONTROLLER,
-  DC_BURGLAR,
-  DC_FIRE,
-  DC_MEDICAL,
-  DC_SPECIAL,
-  DC_BASEUNIT,
-];
+export const DC_ALL = [DC_CONTROLLER, DC_BURGLAR, DC_FIRE, DC_MEDICAL, DC_SPECIAL, DC_BASEUNIT];
 
 // Dictionary of all device categories, for lookup using the code
 export const DC_ALL_LOOKUP: Record<string, DeviceCategory> = {};

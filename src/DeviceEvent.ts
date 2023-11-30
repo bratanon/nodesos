@@ -1,8 +1,4 @@
-import {
-  DCFlags,
-  DeviceEventCode,
-  DeviceType, FlagEnum, IntEnum,
-} from './Enums';
+import { DCFlags, DeviceEventCode, DeviceType, FlagEnum, IntEnum } from './Enums';
 
 /**
  * Represents a device event.

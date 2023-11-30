@@ -174,7 +174,7 @@ export class BaseUnit {
   /**
    * ROM version string.
    */
-  get ROMVersion() : string | undefined {
+  get ROMVersion(): string | undefined {
     return this._ROMVersion;
   }
 
@@ -216,7 +216,7 @@ export class BaseUnit {
    * @param password will be used instead of the password property when issuing
    *  the command
    */
-  async clearStatus (password?: string) {
+  async clearStatus(password?: string) {
     await this.protocol.execute(new ClearStatusCommand(), password);
   }
 
@@ -225,7 +225,7 @@ export class BaseUnit {
    *
    * @param category category of device the base unit will listen for.
    */
-  async addDevice (category: DeviceCategory) {
+  async addDevice(category: DeviceCategory) {
     await this.protocol.execute(new AddDeviceCommand(category));
   }
 
@@ -237,13 +237,7 @@ export class BaseUnit {
    * @param unitNumber unit number the device is to be assigned to.
    * @param enableStatus  flags indicating settings to enable.
    */
-  async changeDevice(
-    deviceId: number,
-    groupNumber: number,
-    unitNumber: number,
-    enableStatus: number
-  ) {
-
+  async changeDevice(deviceId: number, groupNumber: number, unitNumber: number, enableStatus: number) {
     // Lookup device using zone to obtain an accurate index and current
     // values, which will be needed to perform the change command
     const device = this.devices.get(deviceId);
@@ -253,13 +247,17 @@ export class BaseUnit {
       return;
     }
 
-    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber));
+    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(
+      new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber),
+    );
 
     if (getDeviceResponse instanceof DeviceNotFoundResponse) {
       throw new Error('Device to be changed was not found');
     }
 
-    const changeResponse = await this.protocol.execute<DeviceSettingsResponse>(new ChangeDeviceCommand(device.category, getDeviceResponse.index!, groupNumber, unitNumber, enableStatus));
+    const changeResponse = await this.protocol.execute<DeviceSettingsResponse>(
+      new ChangeDeviceCommand(device.category, getDeviceResponse.index!, groupNumber, unitNumber, enableStatus),
+    );
     device.handleResponse(changeResponse);
   }
 
@@ -278,13 +276,17 @@ export class BaseUnit {
       return;
     }
 
-    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber));
+    const getDeviceResponse = await this.protocol.execute<DeviceInfoResponse | DeviceNotFoundResponse>(
+      new GetDeviceCommand(device.category, device.groupNumber, device.unitNumber),
+    );
 
     if (getDeviceResponse instanceof DeviceNotFoundResponse) {
       throw new Error('Device to be deleted was not found');
     }
 
-    await this.protocol.execute<DeviceDeletedResponse>(new DeleteDeviceCommand(device.category, getDeviceResponse.index!));
+    await this.protocol.execute<DeviceDeletedResponse>(
+      new DeleteDeviceCommand(device.category, getDeviceResponse.index!),
+    );
     this.devices.delete(device.deviceId);
 
     if (this.onDeviceDeleted) {
@@ -324,12 +326,14 @@ export class BaseUnit {
    * @param index Index for the event log entry to be obtained.
    */
   async getEventLog(index: number) {
-    const response = await this.protocol.execute<EventLogResponse | EventLogNotFoundResponse>(new GetEventLogCommand(index));
+    const response = await this.protocol.execute<EventLogResponse | EventLogNotFoundResponse>(
+      new GetEventLogCommand(index),
+    );
     if (response instanceof EventLogResponse) {
       return response;
     }
 
-    return ;
+    return;
   }
 
   /**
@@ -374,16 +378,12 @@ export class BaseUnit {
 
     // ROM version may be useful for determining features and commands
     // supported by base unit. May also help with diagnosing issues
-    await this.executeRetry(new GetROMVersionCommand(),
-      'Failed to get ROM version');
+    await this.executeRetry(new GetROMVersionCommand(), 'Failed to get ROM version');
 
     // Get the initial operation mode, exit and entry delay
-    await this.executeRetry(new GetOpModeCommand(),
-      'Failed to get initial operation mode');
-    await this.executeRetry(new GetExitDelayCommand(),
-      'Failed to get exit delay');
-    await this.executeRetry(new GetEntryDelayCommand(),
-      'Failed to get entry delay');
+    await this.executeRetry(new GetOpModeCommand(), 'Failed to get initial operation mode');
+    await this.executeRetry(new GetExitDelayCommand(), 'Failed to get exit delay');
+    await this.executeRetry(new GetEntryDelayCommand(), 'Failed to get entry delay');
 
     // Iterate through all enrolled devices
     for (const category of DC_ALL) {
@@ -395,7 +395,8 @@ export class BaseUnit {
         logger.debug(`Getting ${category.description} device #${index}`);
         const response = await this.executeRetry(
           new GetDeviceByIndexCommand(category, index),
-          `Failed to get ${category.description} device #${index}`);
+          `Failed to get ${category.description} device #${index}`,
+        );
 
         if (!response || response instanceof DeviceNotFoundResponse) {
           break;
@@ -417,24 +418,30 @@ export class BaseUnit {
     // but another user provided a log where their unit uses an 'Away' event
     // with the qualifier indicating if disarmed or armed (refer to
     // https://github.com/rorr73/LifeSOSpy_MQTT/issues/1 for details)
-    if (contactId.eventCode.value === ContactIDEventCode.Away_QuickArm ||
+    if (
+      contactId.eventCode.value === ContactIDEventCode.Away_QuickArm ||
       (contactId.eventCode.value === ContactIDEventCode.Away &&
-        contactId.eventQualifier.value === ContactIDEventQualifier.Restore)) {
+        contactId.eventQualifier.value === ContactIDEventQualifier.Restore)
+    ) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Away);
       this.stateValue = BaseUnitState.Away;
     } else if (contactId.eventCode.value === ContactIDEventCode.Home) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Home);
       this.stateValue = BaseUnitState.Home;
-    } else if (contactId.eventCode.value === ContactIDEventCode.Disarm ||
+    } else if (
+      contactId.eventCode.value === ContactIDEventCode.Disarm ||
       (contactId.eventCode.value === ContactIDEventCode.Away &&
-        contactId.eventQualifier.value === ContactIDEventQualifier.Event)) {
+        contactId.eventQualifier.value === ContactIDEventQualifier.Event)
+    ) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Disarm);
       this.stateValue = BaseUnitState.Disarm;
     } else if (contactId.eventCode.value === ContactIDEventCode.MonitorMode) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Monitor);
       this.stateValue = BaseUnitState.Monitor;
-    } else if (contactId.eventCode.value === ContactIDEventCategory.Alarm &&
-      contactId.eventQualifier.value == ContactIDEventQualifier.Event) {
+    } else if (
+      contactId.eventCode.value === ContactIDEventCategory.Alarm &&
+      contactId.eventQualifier.value == ContactIDEventQualifier.Event
+    ) {
       // Alarm has been triggered
 
       // When entry delay expired, return state to Away mode
@@ -476,8 +483,7 @@ export class BaseUnit {
     // delaying the change to Away mode
 
     // Away mode change is deferred if exit delay set
-    if (deviceEvent.eventCode.value === DeviceEventCode.Away &&
-      (this.operationMode?.value !== OperationMode.Away)) {
+    if (deviceEvent.eventCode.value === DeviceEventCode.Away && this.operationMode?.value !== OperationMode.Away) {
       const hasByPass = Boolean(device.enableStatus.value & ESFlags.Bypass);
       const hasDelay = Boolean(device.enableStatus.value & ESFlags.Delay);
 
@@ -526,13 +532,7 @@ export class BaseUnit {
     } else if (response instanceof EntryDelayResponse) {
       this.entryDelay = response.entryDelay;
     } else if (response instanceof DateTimeResponse) {
-      logger.info(
-        sprintf(
-          'Remote date/time %s %s',
-          response.wasSet ? 'was set to' : 'is',
-          response.remoteDatetime
-        ),
-      );
+      logger.info(sprintf('Remote date/time %s %s', response.wasSet ? 'was set to' : 'is', response.remoteDatetime));
     } else if (response instanceof DeviceInfoResponse) {
       // Add / Update a device
       const device = this.devices.get(response.deviceId);
@@ -554,8 +554,10 @@ export class BaseUnit {
     } else if (response instanceof DeviceAddedResponse) {
       // New device enrolled; the info is insufficient, so we'll need
       // to issue a command to get the full device info
-      this.executeRetry(new GetDeviceByIndexCommand(response.deviceCategory, response.index),
-        `Failed to get new ${response.deviceCategory.description} device #${response.index}`);
+      this.executeRetry(
+        new GetDeviceByIndexCommand(response.deviceCategory, response.index),
+        `Failed to get new ${response.deviceCategory.description} device #${response.index}`,
+      );
     }
   }
 
@@ -571,10 +573,9 @@ export class BaseUnit {
         return;
       }
 
-      const response = await this.protocol.execute(command)
-        .catch(() => {
-          logger.error(`${errorMessage} [Attempt ${attempt}/${maxRetries}]`);
-        });
+      const response = await this.protocol.execute(command).catch(() => {
+        logger.error(`${errorMessage} [Attempt ${attempt}/${maxRetries}]`);
+      });
 
       if (response) {
         return response;
@@ -582,7 +583,7 @@ export class BaseUnit {
     }
   }
 
-  private notifyChange (changedProp: PropertyChangedInfo) {
+  private notifyChange(changedProp: PropertyChangedInfo) {
     // Skip if unchanged
     if (changedProp.oldValue === changedProp.newValue) {
       return;

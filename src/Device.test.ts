@@ -30,7 +30,6 @@ jest.mock('log4js', () => {
 });
 
 describe('Device', () => {
-
   test('constructor', () => {
     const response = new DeviceInfoResponse('ib0050f01a7a0010e41102141000005b05');
     const device = new Device(response);
@@ -116,10 +115,8 @@ describe('Device', () => {
       Object.defineProperty(device, '_rssiBars', { set: setRssiBarsMock });
       Object.defineProperty(device, '_rssiDb', { set: setRssiDbMock });
 
-      const deviceEventRSSIBarsGetMock = jest
-        .spyOn(DeviceEvent.prototype, 'RSSIBars', 'get');
-      const deviceEventRSSIDbGetMock = jest
-        .spyOn(DeviceEvent.prototype, 'RSSIDb', 'get');
+      const deviceEventRSSIBarsGetMock = jest.spyOn(DeviceEvent.prototype, 'RSSIBars', 'get');
+      const deviceEventRSSIDbGetMock = jest.spyOn(DeviceEvent.prototype, 'RSSIDb', 'get');
 
       deviceEventRSSIBarsGetMock.mockReturnValue(1);
       deviceEventRSSIDbGetMock.mockReturnValue(2);
@@ -186,4 +183,3 @@ describe('Device', () => {
     });
   });
 });
-

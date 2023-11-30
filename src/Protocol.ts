@@ -44,10 +44,10 @@ import ROMVersionResponse from './Responses/ROMVersionResponse';
 const logger = log4js.getLogger();
 
 export type State = {
-  command: Command,
-  event: EventEmitter,
-  response?: Response
-}
+  command: Command;
+  event: EventEmitter;
+  response?: Response;
+};
 
 /**
  * Base class containing common functionality for the Client implementation.
@@ -262,8 +262,9 @@ export abstract class Protocol {
             this.onResponse(response);
           }
         }
-      } else if (line.startsWith('MINPIC=')) {
-        // Handle device events; eg. sensor triggered, low battery, etc...
+      }
+      // Handle device events; eg. sensor triggered, low battery, etc...
+      else if (line.startsWith('MINPIC=')) {
         let device_event;
 
         try {
@@ -277,8 +278,9 @@ export abstract class Protocol {
         if (this.onDeviceEvent && device_event) {
           this.onDeviceEvent(device_event);
         }
-      } else if (line.startsWith('(') && line.endsWith(')')) {
-        // Ademco ® Contact ID protocol
+      }
+      // Ademco ® Contact ID protocol
+      else if (line.startsWith('(') && line.endsWith(')')) {
         let contact_id;
         try {
           contact_id = new ContactID(line.substring(1, line.length - 1));
@@ -291,22 +293,26 @@ export abstract class Protocol {
         if (this.onContactId && contact_id) {
           this.onContactId(contact_id);
         }
-      } /* eslint-disable-line brace-style */
+      }
       // Events from devices that haven't been enrolled, as well as a
       // display event from the base unit providing details to be shown.
       // Ignoring them as we have no interest in either.
-      /* eslint-disable-next-line no-empty, brace-style */
-      else if (line.startsWith('XINPIC=')) {}
+      /* eslint-disable-next-line no-empty */
+      else if (line.startsWith('XINPIC=')) {
+      }
       // New sensor log entry; superfluous given device events already
       // provide us with this information, so just ignore them
-      /* eslint-disable-next-line no-empty, brace-style */
-      else if (line.startsWith('[' + CMD_SENSOR_LOG) && line.endsWith(']')) {}
+      /* eslint-disable-next-line no-empty */
+      else if (line.startsWith('[' + CMD_SENSOR_LOG) && line.endsWith(']')) {
+      }
       // Failure to trigger an X10 switch
-      /* eslint-disable-next-line no-empty, brace-style */
-      else if (line === 'X10 ERR') {}
+      /* eslint-disable-next-line no-empty */
+      else if (line === 'X10 ERR') {
+      }
       // Any unrecognised messages; ignore them too...
       /* eslint-disable-next-line no-empty */
-      else {}
+      else {
+      }
     }
   }
 
@@ -315,7 +321,9 @@ export abstract class Protocol {
     text = text.substring(1, text.length - 1).toLowerCase();
 
     // No-op; can just ignore these
-    if (!text) { return null; }
+    if (!text) {
+      return null;
+    }
 
     if (text.startsWith(CMD_DATETIME)) {
       return new DateTimeResponse(text);
@@ -327,7 +335,7 @@ export abstract class Protocol {
       }
       return new DeviceInfoResponse(text);
     } else if (text.startsWith(CMD_DEVICE_PREFIX)) {
-      const action = [ACTION_ADD, ACTION_DEL, ACTION_SET].find(a => a === text.slice(2, 3)) || ACTION_NONE;
+      const action = [ACTION_ADD, ACTION_DEL, ACTION_SET].find((a) => a === text.slice(2, 3)) || ACTION_NONE;
       const args = text.slice(2 + action.length);
 
       if (RESPONSE_ERROR === args) {
@@ -371,14 +379,18 @@ export abstract class Protocol {
    *   property).
    * @param timeout maximum number of seconds to wait for a response.
    */
-  async execute<R extends Response>(command: Command, password: string = '', timeout: number = Protocol.EXECUTE_TIMEOUT_SECS): Promise<R> {
+  async execute<R extends Response>(
+    command: Command,
+    password: string = '',
+    timeout: number = Protocol.EXECUTE_TIMEOUT_SECS,
+  ): Promise<R> {
     if (!this._isConnected) {
       throw new ConnectionError('Client is not connected to the server');
     }
 
     const state = {
-      'command': command,
-      'event': new EventEmitter(),
+      command: command,
+      event: new EventEmitter(),
     } satisfies State;
 
     this.executing[command.name] = state;

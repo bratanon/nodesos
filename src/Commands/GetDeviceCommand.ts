@@ -22,11 +22,7 @@ class GetDeviceCommand extends Command {
    */
   readonly unitNumber: number;
 
-  constructor(
-    deviceCategory: DeviceCategory,
-    groupNumber: number,
-    unitNumber: number
-  ) {
+  constructor(deviceCategory: DeviceCategory, groupNumber: number, unitNumber: number) {
     super();
     this.deviceCategory = deviceCategory;
     this.groupNumber = groupNumber;

@@ -5,4 +5,3 @@ test('ClearedStatusResponse', () => {
   const response = new ClearedStatusResponse();
   expect(response.commandName).toEqual(CMD_CLEAR_STATUS);
 });
-

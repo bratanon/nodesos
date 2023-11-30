@@ -95,8 +95,7 @@ describe('BaseUnit', () => {
   test('addDevice', () => {
     baseUnit.addDevice(DC_CONTROLLER);
 
-    expect(executeSpy).toHaveBeenNthCalledWith(1,
-      new AddDeviceCommand(DC_CONTROLLER));
+    expect(executeSpy).toHaveBeenNthCalledWith(1, new AddDeviceCommand(DC_CONTROLLER));
   });
 
   describe('changeDevice', () => {
@@ -116,7 +115,9 @@ describe('BaseUnit', () => {
     test('throw if device exists in the list but cant be found on the baseunit', async () => {
       executeSpy.mockResolvedValue(new DeviceNotFoundResponse('ibno'));
 
-      await expect(baseUnit.changeDevice(device.deviceId, 5, 5, ESFlags.Supervised)).rejects.toThrow('Device to be changed was not found');
+      await expect(baseUnit.changeDevice(device.deviceId, 5, 5, ESFlags.Supervised)).rejects.toThrow(
+        'Device to be changed was not found',
+      );
       expect(executeSpy).toHaveBeenNthCalledWith(1, expect.any(GetDeviceCommand));
     });
 
@@ -275,8 +276,16 @@ describe('BaseUnit', () => {
       if (!category.maxDevices) {
         continue;
       }
-      expect(executeRetryMock).toHaveBeenNthCalledWith(calls++, new GetDeviceByIndexCommand(category, 0), expect.any(String));
-      expect(executeRetryMock).toHaveBeenNthCalledWith(calls++, new GetDeviceByIndexCommand(category, 1), expect.any(String));
+      expect(executeRetryMock).toHaveBeenNthCalledWith(
+        calls++,
+        new GetDeviceByIndexCommand(category, 0),
+        expect.any(String),
+      );
+      expect(executeRetryMock).toHaveBeenNthCalledWith(
+        calls++,
+        new GetDeviceByIndexCommand(category, 1),
+        expect.any(String),
+      );
     }
   });
 
@@ -533,7 +542,11 @@ describe('BaseUnit', () => {
 
       baseUnit['handleResponse'](response);
 
-      expect(baseUnit['executeRetry']).toHaveBeenNthCalledWith(1, new GetDeviceByIndexCommand(response.deviceCategory, response.index), expect.any(String));
+      expect(baseUnit['executeRetry']).toHaveBeenNthCalledWith(
+        1,
+        new GetDeviceByIndexCommand(response.deviceCategory, response.index),
+        expect.any(String),
+      );
     });
   });
 
@@ -561,10 +574,7 @@ describe('BaseUnit', () => {
     });
 
     test('returns response when execute succeeds', async () => {
-      executeSpy
-        .mockRejectedValueOnce('')
-        .mockRejectedValueOnce('')
-        .mockResolvedValueOnce(new ClearedStatusResponse());
+      executeSpy.mockRejectedValueOnce('').mockRejectedValueOnce('').mockResolvedValueOnce(new ClearedStatusResponse());
 
       const response = await baseUnit['executeRetry'](command, 'FooBar');
       expect(executeSpy).toHaveBeenCalledWith(command);
@@ -610,5 +620,4 @@ describe('BaseUnit', () => {
       expect(log4js.getLogger().error).toHaveBeenCalledWith('Unhandled exception in onPropertiesChanged callback');
     });
   });
-
 });

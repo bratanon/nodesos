@@ -14,7 +14,9 @@ describe('DeviceInfoResponse', () => {
     expect(response.deviceId).toBe(15735418);
     expect(response.deviceType).toEqual(new IntEnum(DeviceType, DeviceType.PIRSensor));
     expect(response.downCount).toBe(5);
-    expect(response.enableStatus).toEqual(new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised));
+    expect(response.enableStatus).toEqual(
+      new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised),
+    );
     expect(response.groupNumber).toBe(17);
     expect(response.index).toBe(0);
     expect(response.messageAttribute).toBe(0);

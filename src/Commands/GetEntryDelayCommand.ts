@@ -16,7 +16,7 @@ class GetEntryDelayCommand extends Command {
    * @inheritDoc
    */
   get name(): string {
-    return CMD_ENTRY_DELAY ;
+    return CMD_ENTRY_DELAY;
   }
 }
 

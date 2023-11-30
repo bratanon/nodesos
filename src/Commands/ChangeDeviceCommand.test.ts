@@ -6,13 +6,7 @@ import ChangeDeviceCommand from './ChangeDeviceCommand';
 describe('ChangeDeviceCommand', () => {
   let command: ChangeDeviceCommand;
   beforeEach(() => {
-    command = new ChangeDeviceCommand(
-      DC_BURGLAR,
-      1,
-      2,
-      3,
-      ESFlags.Supervised ^ ESFlags.AlarmSiren
-    );
+    command = new ChangeDeviceCommand(DC_BURGLAR, 1, 2, 3, ESFlags.Supervised ^ ESFlags.AlarmSiren);
   });
 
   test('constructor', () => {

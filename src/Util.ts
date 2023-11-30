@@ -41,7 +41,7 @@ export const fromAsciiHex = (text: string): number => {
     } else {
       throw new Error('Response contains invalid character.');
     }
-    value = (value * 0x10) + digit;
+    value = value * 0x10 + digit;
   }
   return value;
 };

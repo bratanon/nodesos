@@ -12,13 +12,11 @@ describe('SetExitDelayCommand', () => {
   });
 
   test('constructor fails when entryDelay < 0x00', () => {
-    expect(() => new SetExitDelayCommand(-1))
-      .toThrow('Exit delay cannot be negative.');
+    expect(() => new SetExitDelayCommand(-1)).toThrow('Exit delay cannot be negative.');
   });
 
   test('constructor fails when entryDelay < 0xff', () => {
-    expect(() => new SetExitDelayCommand(256))
-      .toThrow('Exit delay cannot exceed 255 seconds.');
+    expect(() => new SetExitDelayCommand(256)).toThrow('Exit delay cannot exceed 255 seconds.');
   });
 
   test('action', () => {

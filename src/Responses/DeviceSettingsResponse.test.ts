@@ -14,7 +14,9 @@ describe('DeviceSettingsResponse', () => {
     const response = new MockedClass('ib?0511021410');
     expect(response.commandName).toEqual(CMD_DEVICE_PREFIX + DC_BURGLAR.code);
     expect(response.deviceCategory).toEqual(DC_BURGLAR);
-    expect(response.enableStatus).toEqual(new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised));
+    expect(response.enableStatus).toEqual(
+      new FlagEnum(ESFlags, ESFlags.HomeGuard | ESFlags.AlarmSiren | ESFlags.Supervised),
+    );
     expect(response.groupNumber).toBe(17);
     expect(response.index).toBe(5);
     expect(response.unitNumber).toBe(2);

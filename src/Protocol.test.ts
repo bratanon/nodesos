@@ -23,7 +23,6 @@ import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
 
 class ProtocolProxy extends Protocol {
-
   constructor() {
     super();
   }
@@ -226,7 +225,9 @@ describe('Protocol', () => {
       /* eslint-disable-next-line jest/no-done-callback */
       test('emits to the state event', (done) => {
         const emitSpy = jest.spyOn(state.event, 'emit');
-        state.event.once(state.command.name, () => { done(); });
+        state.event.once(state.command.name, () => {
+          done();
+        });
         getExecutingMock.mockReturnValue({ [state.command.name]: state });
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
@@ -246,7 +247,7 @@ describe('Protocol', () => {
 
         protocol.handleOnData(Buffer.from(string, 'ascii'));
 
-        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse),);
+        expect(protocol.onResponse).toHaveBeenNthCalledWith(1, expect.any(ClearedStatusResponse));
       });
     });
 
@@ -382,12 +383,11 @@ describe('Protocol', () => {
         isConnectedMock.mockReturnValue(true);
         const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout');
 
-        protocol.execute(new GetDateTimeCommand())
-          .then(() => {
-            expect(protocol.socket.write).toHaveBeenNthCalledWith(1, '!dt?&');
-            expect(clearTimeoutSpy).toHaveBeenCalled();
-            done();
-          });
+        protocol.execute(new GetDateTimeCommand()).then(() => {
+          expect(protocol.socket.write).toHaveBeenNthCalledWith(1, '!dt?&');
+          expect(clearTimeoutSpy).toHaveBeenCalled();
+          done();
+        });
 
         protocol.handleOnData(Buffer.from('!dt86042071200&\r\n', 'ascii'));
       });
@@ -396,11 +396,10 @@ describe('Protocol', () => {
       test('writes to socket with password', (done) => {
         isConnectedMock.mockReturnValue(true);
 
-        protocol.execute(new GetDateTimeCommand(), 'foobar')
-          .then(() => {
-            expect(protocol.socket.write).toHaveBeenNthCalledWith(1, '!dt?foobar&');
-            done();
-          });
+        protocol.execute(new GetDateTimeCommand(), 'foobar').then(() => {
+          expect(protocol.socket.write).toHaveBeenNthCalledWith(1, '!dt?foobar&');
+          done();
+        });
 
         protocol.handleOnData(Buffer.from('!dt86042071200&\r\n', 'ascii'));
       });
@@ -408,13 +407,17 @@ describe('Protocol', () => {
       test('throws at timeout', async () => {
         isConnectedMock.mockReturnValue(true);
 
-        await expect(protocol.execute(new GetDateTimeCommand(), '', 1)).rejects.toThrow(expect.any(CommandTimeoutError));
+        await expect(protocol.execute(new GetDateTimeCommand(), '', 1)).rejects.toThrow(
+          expect.any(CommandTimeoutError),
+        );
       });
 
       test('throws when protocol is not connected', async () => {
         isConnectedMock.mockReturnValue(false);
 
-        await expect(protocol.execute(new GetDateTimeCommand(), '', 1)).rejects.toThrow('Client is not connected to the server');
+        await expect(protocol.execute(new GetDateTimeCommand(), '', 1)).rejects.toThrow(
+          'Client is not connected to the server',
+        );
       });
     });
   });

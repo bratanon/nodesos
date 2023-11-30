@@ -1,7 +1,6 @@
 import Command from '../Command';
 
 class CommandTimeoutError extends Error {
-
   /**
    * The issued command.
    */

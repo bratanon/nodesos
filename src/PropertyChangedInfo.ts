@@ -3,7 +3,6 @@
  */
 // @TODO: Implement generics for values.
 class PropertyChangedInfo {
-
   /**
    * Name of the property that was changed.
    */

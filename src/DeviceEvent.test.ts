@@ -16,8 +16,7 @@ describe('Device Event', () => {
   });
 
   test('constructor fails when text length < 19', () => {
-    expect(() => new DeviceEvent('MINPIC=0'))
-      .toThrow('Event length is invalid.');
+    expect(() => new DeviceEvent('MINPIC=0')).toThrow('Event length is invalid.');
   });
 
   describe('RSSIBars', () => {

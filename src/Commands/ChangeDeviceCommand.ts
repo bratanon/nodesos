@@ -38,7 +38,7 @@ class ChangeDeviceCommand extends Command {
     index: number,
     groupNumber: number,
     unitNumber: number,
-    enableStatus: number
+    enableStatus: number,
   ) {
     super();
 
@@ -60,7 +60,8 @@ class ChangeDeviceCommand extends Command {
    * @inheritDoc
    */
   get args(): string {
-    return sprintf('%s%s%s%s%s',
+    return sprintf(
+      '%s%s%s%s%s',
       toAsciiHex(this.index, 2),
       toAsciiHex(this.groupNumber, 2),
       toAsciiHex(this.unitNumber, 2),

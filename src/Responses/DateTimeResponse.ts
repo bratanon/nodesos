@@ -39,8 +39,7 @@ class DateTimeResponse extends Response {
       throw new Error(`Date/Time response length is invalid. Got '${text}'`);
     }
 
-    this.remoteDatetime = DateTime.fromFormat(text, 'yyLLddcHHmm')
-      .toISO({ includeOffset: false }) ?? undefined;
+    this.remoteDatetime = DateTime.fromFormat(text, 'yyLLddcHHmm').toISO({ includeOffset: false }) ?? undefined;
   }
 }
 
