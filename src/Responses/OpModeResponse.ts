@@ -1,7 +1,7 @@
 import { ACTION_SET, CMD_OPMODE } from '../Const';
 import { IntEnum, OperationMode } from '../Enums';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that provides the current operation mode on the LifeSOS base unit.

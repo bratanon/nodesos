@@ -1,6 +1,6 @@
 import Command from '../Command';
 import { ACTION_SET, CMD_ENTRY_DELAY } from '../Const';
-import { toAsciiHex } from '../Util';
+import { toAsciiHex } from '../Utils';
 
 /**
  * Command to set the entry delay on the LifeSOS base unit.

@@ -4,7 +4,7 @@ import { CMD_EVENT_LOG } from '../Const';
 import DeviceCategory, { DC_ALL, DC_BASEUNIT } from '../DeviceCategory';
 import { ContactIDEventCode, ContactIDEventQualifier, IntEnum } from '../Enums';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that provides an entry from the event log.

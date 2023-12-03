@@ -1,6 +1,6 @@
 import { ACTION_SET, CMD_EXIT_DELAY } from '../Const';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that provides the current exit delay on the LifeSOS base unit.

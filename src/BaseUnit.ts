@@ -453,7 +453,7 @@ export class BaseUnit {
     // Notify via callback if needed
     if (this.onEvent) {
       try {
-        this.onEvent?.(contactId);
+        this.onEvent(contactId);
       } catch (error) {
         logger.error('Unhandled exception in onEvent callback');
       }

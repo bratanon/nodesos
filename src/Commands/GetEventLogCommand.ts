@@ -1,6 +1,6 @@
 import Command from '../Command';
 import { CMD_EVENT_LOG } from '../Const';
-import { toAsciiHex } from '../Util';
+import { toAsciiHex } from '../Utils';
 
 /**
  * Get an entry from the event log.

@@ -3,7 +3,7 @@ import { CMD_DEVICE_PREFIX } from '../Const';
 import DeviceCategory, { DC_ALL_LOOKUP } from '../DeviceCategory';
 import { DCFlags, DeviceType, ESFlags, FlagEnum, IntEnum } from '../Enums';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that provides information for a device, and the settings that
@@ -92,9 +92,11 @@ class DeviceInfoResponse extends Response {
     this.deviceId = fromAsciiHex(text.slice(2, 8));
     this.messageAttribute = fromAsciiHex(text.slice(8, 10));
     this.deviceCharacteristics = new FlagEnum(DCFlags, fromAsciiHex(text.slice(10, 12)));
+    // 12-14 unknown
     this.groupNumber = fromAsciiHex(text.slice(14, 16));
     this.unitNumber = fromAsciiHex(text.slice(16, 18));
     this.enableStatus = new FlagEnum(ESFlags, fromAsciiHex(text.slice(18, 22)));
+    // 22-26 Switches
     this.currentStatus = fromAsciiHex(text.slice(26, 28));
     this.downCount = fromAsciiHex(text.slice(28, 30));
   }

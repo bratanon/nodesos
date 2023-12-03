@@ -1,6 +1,6 @@
 import { ACTION_SET, CMD_ENTRY_DELAY } from '../Const';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that provides the current entry delay on the LifeSOS base unit.

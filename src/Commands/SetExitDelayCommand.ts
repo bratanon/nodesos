@@ -1,6 +1,6 @@
 import Command from '../Command';
 import { ACTION_SET, CMD_EXIT_DELAY } from '../Const';
-import { toAsciiHex } from '../Util';
+import { toAsciiHex } from '../Utils';
 
 /**
  * Command to set the exit delay on the LifeSOS base unit.

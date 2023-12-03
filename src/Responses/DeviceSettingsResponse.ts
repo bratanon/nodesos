@@ -2,7 +2,7 @@ import { sprintf } from 'sprintf-js';
 import DeviceCategory, { DC_ALL_LOOKUP } from '../DeviceCategory';
 import { ESFlags, FlagEnum } from '../Enums';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Settings configured in base unit for a device.

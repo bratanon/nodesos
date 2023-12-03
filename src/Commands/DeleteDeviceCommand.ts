@@ -1,7 +1,7 @@
 import Command from '../Command';
 import { ACTION_DEL, CMD_DEVICE_PREFIX } from '../Const';
 import DeviceCategory from '../DeviceCategory';
-import { toAsciiHex } from '../Util';
+import { toAsciiHex } from '../Utils';
 
 /**
  * Delete an enrolled device.

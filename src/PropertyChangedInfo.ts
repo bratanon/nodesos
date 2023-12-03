@@ -1,7 +1,6 @@
 /**
  * Provides details for a property change.
  */
-// @TODO: Implement generics for values.
 class PropertyChangedInfo {
   /**
    * Name of the property that was changed.
@@ -11,15 +10,14 @@ class PropertyChangedInfo {
   /**
    * The new property value.
    */
-  oldValue: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  oldValue: unknown;
 
   /**
    * The old property value.
    */
-  newValue: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  newValue: unknown;
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  constructor(name: string, oldValue: any, newValue: any) {
+  constructor(name: string, oldValue: unknown, newValue: unknown) {
     this.name = name;
     this.oldValue = oldValue;
     this.newValue = newValue;

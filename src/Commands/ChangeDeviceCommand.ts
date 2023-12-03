@@ -2,7 +2,7 @@ import { sprintf } from 'sprintf-js';
 import Command from '../Command';
 import { ACTION_SET, CMD_DEVICE_PREFIX } from '../Const';
 import DeviceCategory from '../DeviceCategory';
-import { toAsciiHex } from '../Util';
+import { toAsciiHex } from '../Utils';
 
 /**
  * Change settings for a device on the base unit.

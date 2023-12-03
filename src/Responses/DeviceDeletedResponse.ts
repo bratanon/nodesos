@@ -1,6 +1,6 @@
 import DeviceCategory, { DC_ALL_LOOKUP } from '../DeviceCategory';
 import Response from '../Response';
-import { fromAsciiHex } from '../Util';
+import { fromAsciiHex } from '../Utils';
 
 /**
  * Response that indicates a device was deleted.
