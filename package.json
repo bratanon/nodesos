@@ -1,12 +1,13 @@
 {
   "name": "nodesos",
   "version": "1.0.0",
-  "description": "",
+  "description": "A module to communicate with LifeSOS alarm systems.",
   "license": "MIT",
   "author": "Emil Stjerneman <emil@stjerneman.com>",
+  "type": "module",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "npm tsc",
+    "build": "tsc",
     "test": "jest",
     "lint": "eslint src",
     "prettier": "prettier src --write",
