@@ -26,7 +26,7 @@ module.exports = {
     },
   },
   rules: {
-    'no-console': 'warn',
+    'no-console': 'error',
     'jest/no-disabled-tests': 'error',
     'jest/no-duplicate-hooks': 'error',
     'jest/no-focused-tests': 'error',
