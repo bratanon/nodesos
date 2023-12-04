@@ -186,7 +186,7 @@ class Device {
     this.rssiDb = deviceEvent.RSSIDb;
 
     // Notify via callback if needed
-    if (this.onEvent && deviceEvent.eventCode.string) {
+    if (this.onEvent && deviceEvent.eventCode.string !== 'undefined') {
       try {
         this.onEvent(this, deviceEvent.eventCode.value as DeviceEventCode);
       } catch (error) {

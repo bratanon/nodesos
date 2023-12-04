@@ -133,7 +133,7 @@ describe('Device', () => {
     });
 
     describe('onEvent', () => {
-      test('Calls onEvent', () => {
+      test('calls onEvent', () => {
         eventCodeMock.mockReturnValue(new IntEnum(DeviceEventCode, DeviceEventCode.BatteryLow));
 
         const device = new Device(new DeviceInfoResponse(''));
@@ -145,7 +145,7 @@ describe('Device', () => {
         expect(onEventMock).toHaveBeenNthCalledWith(1, device, deviceEvent.eventCode.value);
       });
 
-      test('Catches errors from onEvent', () => {
+      test('catches errors from onEvent', () => {
         eventCodeMock.mockReturnValue(new IntEnum(DeviceEventCode, DeviceEventCode.BatteryLow));
         const device = new Device(new DeviceInfoResponse(''));
         device.onEvent = () => {
@@ -154,6 +154,16 @@ describe('Device', () => {
         device.handleDeviceEvent(deviceEvent);
 
         expect(log4js.getLogger().error).toHaveBeenCalledWith('Unhandled exception in onEvent callback');
+      });
+
+      test('dont call onEvent when the event string is undefined', () => {
+        eventCodeMock.mockReturnValue(new IntEnum(DeviceEventCode, 1337));
+        const device = new Device(new DeviceInfoResponse(''));
+        const onEventMock = jest.fn();
+        device.onEvent = onEventMock;
+        device.handleDeviceEvent(deviceEvent);
+
+        expect(onEventMock).not.toHaveBeenCalled();
       });
     });
   });
