@@ -110,14 +110,14 @@ export class BaseUnit {
     this.protocol = new Client(port, host);
 
     this.handleConnectionMade = this.handleConnectionMade.bind(this);
-    this.handleConnectionLost = this.handleConnectionLost.bind(this);
+    this.handleConnectionClose = this.handleConnectionClose.bind(this);
     this.handleContactId = this.handleContactId.bind(this);
     this.handleDeviceEvent = this.handleDeviceEvent.bind(this);
     this.handleResponse = this.handleResponse.bind(this);
 
     // Assign callbacks to capture all events
     this.protocol.onConnectionMade = this.handleConnectionMade;
-    this.protocol.onConnectionClose = this.handleConnectionLost;
+    this.protocol.onConnectionClose = this.handleConnectionClose;
     this.protocol.onContactId = this.handleContactId;
     this.protocol.onDeviceEvent = this.handleDeviceEvent;
     this.protocol.onResponse = this.handleResponse;
@@ -365,11 +365,13 @@ export class BaseUnit {
     await this.getInitialState();
   }
 
-  private handleConnectionLost() {
-    // When we lose connection as a Client, schedule reconnect attempt
-    //logger.error("Connection was lost. Will attempt to reconnect in %s seconds")
-    logger.error('Connection was lost.');
-    // self._loop.call_later(self._reconnect_interval, self._reconnect)
+  private handleConnectionClose(hadError: boolean) {
+    if (hadError) {
+      logger.error('Connection closed with errors.');
+    } else {
+      logger.info('Connection closed.');
+    }
+
     this.isConnected = false;
   }
 

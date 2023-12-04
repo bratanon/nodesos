@@ -227,9 +227,16 @@ describe('BaseUnit', () => {
     expect(baseUnit['getInitialState']).toHaveBeenCalled();
   });
 
-  test('handleConnectionLost', () => {
+  test('handleConnectionClose with error', () => {
     baseUnit['isConnected'] = true;
-    baseUnit['handleConnectionLost']();
+    baseUnit['handleConnectionClose'](true);
+
+    expect(baseUnit.isConnected).toBe(false);
+  });
+
+  test('handleConnectionClose without errors', () => {
+    baseUnit['isConnected'] = true;
+    baseUnit['handleConnectionClose'](false);
 
     expect(baseUnit.isConnected).toBe(false);
   });
