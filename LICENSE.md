@@ -1,6 +1,6 @@
 The MIT License
 
-Copyright Emil Stjerneman (bratanon) and other contributors.
+Copyright (c) Emil Stjerneman (bratanon) and other contributors.
 
 Based on LifeSOSpy, copyright Richard Orr,
 
