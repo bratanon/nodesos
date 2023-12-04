@@ -70,6 +70,9 @@ typings/
 # production
 /dist
 
+# parcel cache
+/.parcel-cache
+
 # Project notes
 /notes
 
