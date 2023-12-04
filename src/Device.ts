@@ -7,7 +7,7 @@ import Response from './Response';
 import DeviceInfoResponse from './Responses/DeviceInfoResponse';
 import DeviceSettingsResponse from './Responses/DeviceSettingsResponse';
 
-const logger = log4js.getLogger();
+const logger = log4js.getLogger('NodeSOS.Device');
 
 /**
  * Represents a device that has been enrolled on the base unit.

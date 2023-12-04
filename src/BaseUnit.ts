@@ -46,7 +46,7 @@ import ExitDelayResponse from './Responses/ExitDelayResponse';
 import OpModeResponse from './Responses/OpModeResponse';
 import ROMVersionResponse from './Responses/ROMVersionResponse';
 
-const logger = log4js.getLogger();
+const logger = log4js.getLogger('NodeSOS.BaseUnit');
 
 /**
  * Represents the base unit.
