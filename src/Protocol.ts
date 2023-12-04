@@ -203,19 +203,10 @@ export abstract class Protocol {
   }
 
   protected handleOnData(data: Buffer) {
-    // if (!data) {
-    //   return;
-    // }
-
     // We should only receive ASCII text. Anything that doesn't decode is
     // garbage; a sign the user may have a faulty cable between the base
     // unit and the serial-ethernet adapter (this happened to me!)
     const recv_chars = data.toString('ascii');
-
-    // Don't log baseunit heartbeats for now.
-    if ('\n(1ac3181602005006)\r\n' !== recv_chars.replaceAll('\n', '\\n').replaceAll('\r', '\\r')) {
-      logger.debug('DataReceived:', recv_chars.replaceAll('\n', '\\n').replaceAll('\r', '\\r'));
-    }
 
     // Data received will have CR/LF somewhat randomly at either the start or end
     // of each message. To deal with this, we'll append it to a running buffer and then
