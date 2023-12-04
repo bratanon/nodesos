@@ -41,11 +41,11 @@ import { Client, GetOpModeCommand, OpModeResponse } from 'nodesos';
 
 (async () => {
   const client = new Client(1680, '192.168.1.100');
-  await client.open()
+  await client.open();
 
   const response = await client.execute<OpModeResponse>(new GetOpModeCommand());
 
-  print("Operation mode is {}".format(str(response.operation_mode)))
+  console.log(`Operation mode is ${response.operation_mode}`);
 
   await client.close();
   process.exit(0);
@@ -59,7 +59,7 @@ import { Client, SetOpModeCommand, OpModeResponse } from 'nodesos';
 
 (async () => {
   const client = new Client(1680, '192.168.1.100');
-  await client.open()
+  await client.open();
 
   const response = await client.execute<OpModeResponse>(new SetOpModeCommand());
 
