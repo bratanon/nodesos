@@ -1,5 +1,9 @@
 # NodeSOS
 
+[![Version][version-shield]][npm-link]
+[![License][license-shield]](LICENSE.md)
+[![Type definitions][type-definitions-shield]][npm-link]
+
 A Nodejs module to communicate with [LifeSOS](http://lifesos.com.tw)
 alarm systems. In some markets, they may also be labelled under the name
 of the distributor; e.g. SecurePro in Australia, WeBeHome in northern
@@ -72,3 +76,8 @@ import { Client, SetOpModeCommand, OpModeResponse } from 'nodesos';
 
 This project is heavily inspired by the [LifeSOSpy](https://github.com/rorr73/LifeSOSpy)
 project by rorr73.
+
+[license-shield]: https://img.shields.io/npm/l/nodesos
+[npm-link]: https://img.shields.io/npm/v/nodesos
+[type-definitions-shield]: https://img.shields.io/npm/types/nodesos
+[version-shield]: https://img.shields.io/npm/v/nodesos
