@@ -40,7 +40,17 @@ export { default as Client } from './Client';
 export * from './Const';
 export { default as ContactId } from './ContactId';
 export { default as Device } from './Device';
-export { default as DeviceCategory } from './DeviceCategory';
+export {
+  default as DeviceCategory,
+  DC_ALL,
+  DC_ALL_LOOKUP,
+  DC_BASEUNIT,
+  DC_BURGLAR,
+  DC_CONTROLLER,
+  DC_FIRE,
+  DC_MEDICAL,
+  DC_SPECIAL,
+} from './DeviceCategory';
 export { default as DeviceEvent } from './DeviceEvent';
 export * from './Enums';
 export { default as PropertyChangedInfo } from './PropertyChangedInfo';
