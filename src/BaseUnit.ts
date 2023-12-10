@@ -71,7 +71,7 @@ export class BaseUnit {
   private _isConnected: boolean = false;
   private _operationMode?: IntEnum<typeof OperationMode>;
   private _ROMVersion?: string;
-  private _stateValue?: number;
+  private _state?: number;
 
   readonly protocol: Client;
 
@@ -186,13 +186,13 @@ export class BaseUnit {
   /**
    * Current state of the base unit.
    */
-  get stateValue(): number | undefined {
-    return this._stateValue;
+  get state(): number | undefined {
+    return this._state;
   }
 
-  private set stateValue(value: number) {
-    this.notifyChange(new PropertyChangedInfo('stateValue', this._stateValue, value));
-    this._stateValue = value;
+  private set state(value: number) {
+    this.notifyChange(new PropertyChangedInfo('state', this._state, value));
+    this._state = value;
   }
 
   /**
@@ -426,20 +426,20 @@ export class BaseUnit {
         contactId.eventQualifier.value === ContactIDEventQualifier.Restore)
     ) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Away);
-      this.stateValue = BaseUnitState.Away;
+      this.state = BaseUnitState.Away;
     } else if (contactId.eventCode.value === ContactIDEventCode.Home) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Home);
-      this.stateValue = BaseUnitState.Home;
+      this.state = BaseUnitState.Home;
     } else if (
       contactId.eventCode.value === ContactIDEventCode.Disarm ||
       (contactId.eventCode.value === ContactIDEventCode.Away &&
         contactId.eventQualifier.value === ContactIDEventQualifier.Event)
     ) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Disarm);
-      this.stateValue = BaseUnitState.Disarm;
+      this.state = BaseUnitState.Disarm;
     } else if (contactId.eventCode.value === ContactIDEventCode.MonitorMode) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Monitor);
-      this.stateValue = BaseUnitState.Monitor;
+      this.state = BaseUnitState.Monitor;
     } else if (
       contactId.eventCode.value === ContactIDEventCategory.Alarm &&
       contactId.eventQualifier.value == ContactIDEventQualifier.Event
@@ -447,8 +447,8 @@ export class BaseUnit {
       // Alarm has been triggered
 
       // When entry delay expired, return state to Away mode
-      if (this.stateValue === BaseUnitState.AwayEntryDelay) {
-        this.stateValue = BaseUnitState.Away;
+      if (this.state === BaseUnitState.AwayEntryDelay) {
+        this.state = BaseUnitState.Away;
       }
     }
 
@@ -490,17 +490,17 @@ export class BaseUnit {
       const hasDelay = Boolean(device.enableStatus.value & ESFlags.Delay);
 
       if (device.category === DC_CONTROLLER && !hasByPass && hasDelay && (this.exitDelay ?? 0) > 0) {
-        this.stateValue = BaseUnitState.AwayExitDelay;
+        this.state = BaseUnitState.AwayExitDelay;
       } else {
         this.operationMode = new IntEnum(OperationMode, OperationMode.Away);
-        this.stateValue = BaseUnitState.Away;
+        this.state = BaseUnitState.Away;
       }
     } else if (deviceEvent.eventCode.value === DeviceEventCode.Home) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Home);
-      this.stateValue = BaseUnitState.Home;
+      this.state = BaseUnitState.Home;
     } else if (deviceEvent.eventCode.value === DeviceEventCode.Disarm) {
       this.operationMode = new IntEnum(OperationMode, OperationMode.Disarm);
-      this.stateValue = BaseUnitState.Disarm;
+      this.state = BaseUnitState.Disarm;
     }
 
     // When a burglar sensor is tripped while in Away mode and an entry
@@ -517,7 +517,7 @@ export class BaseUnit {
       const hasEntryDelay = Boolean(this.entryDelay && this.entryDelay > 0);
 
       if (isBurglarCategory && !hasBypass && !hasInactivity && hasDelay && hasEntryDelay) {
-        this.stateValue = BaseUnitState.AwayEntryDelay;
+        this.state = BaseUnitState.AwayEntryDelay;
       }
     }
   }
@@ -528,7 +528,7 @@ export class BaseUnit {
       this.ROMVersion = response.version;
     } else if (response instanceof OpModeResponse) {
       this.operationMode = response.operationMode;
-      this.stateValue = response.operationMode.value;
+      this.state = response.operationMode.value;
     } else if (response instanceof ExitDelayResponse) {
       this.exitDelay = response.exitDelay;
     } else if (response instanceof EntryDelayResponse) {
