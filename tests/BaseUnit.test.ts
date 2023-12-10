@@ -286,7 +286,7 @@ describe('BaseUnit', () => {
 
     beforeEach(() => {
       operationModeSpy = jest.spyOn(BaseUnit.prototype, 'operationMode', 'set');
-      stateValueSpy = jest.spyOn(BaseUnit.prototype, 'stateValue', 'set');
+      stateValueSpy = jest.spyOn(BaseUnit.prototype, 'state', 'set');
       baseUnit.onEvent = jest.fn();
       onEventSpy = jest.spyOn(baseUnit, 'onEvent');
     });
@@ -363,7 +363,7 @@ describe('BaseUnit', () => {
     });
 
     test('when event code is Alarm and qualifier is Event and stateValue is AwayEntryDelay', () => {
-      baseUnit['stateValue'] = BaseUnitState.AwayEntryDelay;
+      baseUnit['state'] = BaseUnitState.AwayEntryDelay;
       stateValueSpy.mockClear();
       const contactId = new ContactIdBuilder()
         .eventCode(ContactIDEventCode.BurglarAlarm & 0xf00)
@@ -432,7 +432,7 @@ describe('BaseUnit', () => {
 
         baseUnit['handleDeviceEvent'](deviceEvent);
 
-        expect(baseUnit.stateValue).toEqual(BaseUnitState.AwayExitDelay);
+        expect(baseUnit.state).toEqual(BaseUnitState.AwayExitDelay);
       });
 
       test('set stateValue and operationMode to Away', () => {
@@ -444,7 +444,7 @@ describe('BaseUnit', () => {
         baseUnit['handleDeviceEvent'](deviceEvent);
 
         expect(baseUnit.operationMode).toEqual(new IntEnum(OperationMode, OperationMode.Away));
-        expect(baseUnit.stateValue).toEqual(BaseUnitState.Away);
+        expect(baseUnit.state).toEqual(BaseUnitState.Away);
       });
     });
 
@@ -460,7 +460,7 @@ describe('BaseUnit', () => {
       baseUnit['handleDeviceEvent'](deviceEvent);
 
       expect(baseUnit.operationMode).toEqual(new IntEnum(OperationMode, OperationMode.Home));
-      expect(baseUnit.stateValue).toEqual(BaseUnitState.Home);
+      expect(baseUnit.state).toEqual(BaseUnitState.Home);
     });
 
     test('set stateValue and operationMode to Disarm', () => {
@@ -475,7 +475,7 @@ describe('BaseUnit', () => {
       baseUnit['handleDeviceEvent'](deviceEvent);
 
       expect(baseUnit.operationMode).toEqual(new IntEnum(OperationMode, OperationMode.Disarm));
-      expect(baseUnit.stateValue).toEqual(BaseUnitState.Disarm);
+      expect(baseUnit.state).toEqual(BaseUnitState.Disarm);
     });
 
     test('set stateValue to AwayEntryDelay', () => {
@@ -492,7 +492,7 @@ describe('BaseUnit', () => {
 
       baseUnit['handleDeviceEvent'](deviceEvent);
 
-      expect(baseUnit.stateValue).toEqual(BaseUnitState.AwayEntryDelay);
+      expect(baseUnit.state).toEqual(BaseUnitState.AwayEntryDelay);
     });
   });
 
@@ -505,7 +505,7 @@ describe('BaseUnit', () => {
     test('handles OpModeResponse', () => {
       baseUnit['handleResponse'](new OpModeResponse('n0s0'));
       expect(baseUnit['operationMode']).toEqual(new IntEnum(OperationMode, OperationMode.Disarm));
-      expect(baseUnit['stateValue']).toBe(0);
+      expect(baseUnit['state']).toBe(0);
     });
 
     test('handles ExitDelayResponse', () => {
