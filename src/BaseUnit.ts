@@ -172,6 +172,17 @@ export class BaseUnit {
   }
 
   /**
+   * Control password, if one has been assigned on the base unit.
+   */
+  get password() {
+    return this.protocol.password;
+  }
+
+  set password(password: string) {
+    this.protocol.password = password;
+  }
+
+  /**
    * ROM version string.
    */
   get ROMVersion(): string | undefined {
