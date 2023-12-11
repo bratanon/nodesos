@@ -1,6 +1,6 @@
 {
   "name": "nodesos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A module to communicate with LifeSOS alarm systems.",
   "repository": {
     "type": "git",
