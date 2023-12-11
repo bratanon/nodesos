@@ -36,6 +36,7 @@ import EventLogResponse from '../src/Responses/EventLogResponse';
 import ExitDelayResponse from '../src/Responses/ExitDelayResponse';
 import OpModeResponse from '../src/Responses/OpModeResponse';
 import ROMVersionResponse from '../src/Responses/ROMVersionResponse';
+import exp = require('constants');
 
 jest.mock('../src/Client');
 
@@ -59,6 +60,18 @@ describe('BaseUnit', () => {
     baseUnit.stop();
 
     expect(Client.prototype.close).toHaveBeenCalled();
+  });
+
+  describe('password', () => {
+    test('get password', () => {
+      baseUnit.protocol.password = 'foobar';
+      expect(baseUnit.password).toEqual('foobar');
+    });
+
+    test('set password', () => {
+      baseUnit.password = 'foobar';
+      expect(baseUnit.protocol.password).toEqual('foobar');
+    });
   });
 
   describe('clearStatus', () => {
