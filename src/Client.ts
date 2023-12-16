@@ -26,8 +26,6 @@ class Client extends Protocol {
    */
   async open(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.socket.connect({ port: this.port, host: this.host });
-
       this.socket.once('connect', () => {
         resolve();
       });
@@ -35,6 +33,8 @@ class Client extends Protocol {
       this.socket.once('error', (err) => {
         reject(err);
       });
+
+      this.socket.connect({ port: this.port, host: this.host });
     });
   }
 
@@ -42,12 +42,20 @@ class Client extends Protocol {
    * Close connection to the LifeSOS ethernet interface.
    */
   async close(): Promise<void> {
-    return new Promise((resolve) => {
-      this.socket.end();
+    if (this.socket.closed) {
+      return Promise.resolve();
+    }
 
+    return new Promise((resolve, reject) => {
       this.socket.once('close', () => {
         resolve();
       });
+
+      this.socket.once('error', (error: Error) => {
+        reject(error);
+      });
+
+      this.socket.end();
     });
   }
 }

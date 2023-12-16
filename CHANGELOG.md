@@ -9,3 +9,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - More clear log messages for the base unit.
+- Events should be assigned before calling the handler.
+- Client `close()` now resolves immediately if the socket already is closed.

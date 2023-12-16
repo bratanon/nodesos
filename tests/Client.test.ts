@@ -29,11 +29,30 @@ describe('Client', () => {
     });
   });
 
-  test('close', async () => {
-    client.socket.end = jest.fn();
-    const closePromise = client.close();
-    client.socket.emit('close');
+  describe('close', () => {
+    test('success', async () => {
+      client.socket.end = jest.fn();
+      const closePromise = client.close();
+      client.socket.emit('close');
 
-    await expect(closePromise).resolves.toBeUndefined();
+      await expect(closePromise).resolves.toBeUndefined();
+    });
+
+    test('failure', async () => {
+      const closePromise = client.close();
+      client.socket.emit('error');
+
+      await expect(closePromise).rejects.toBeUndefined();
+    });
+
+    test('close when socket already is closed', async () => {
+      client.socket.end = jest.fn();
+      client.socket.destroy();
+
+      const closePromise = client.close();
+      await expect(closePromise).resolves.toBeUndefined();
+      expect(client.socket.end).not.toHaveBeenCalled();
+    });
   });
+
 });
