@@ -369,7 +369,7 @@ export class BaseUnit {
   }
 
   private async handleConnectionMade() {
-    logger.debug('Connected successfully');
+    logger.debug('Connected to LifeSOS alarm');
     this.isConnected = true;
 
     // Get initial state info and find devices
@@ -378,9 +378,9 @@ export class BaseUnit {
 
   private handleConnectionClose(hadError: boolean) {
     if (hadError) {
-      logger.error('Connection closed with errors.');
+      logger.error('Connection closed to LifeSOS alarm with errors.');
     } else {
-      logger.info('Connection closed.');
+      logger.info('Connection closed to LifeSOS alarm');
     }
 
     this.isConnected = false;
