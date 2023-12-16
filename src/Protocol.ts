@@ -53,7 +53,6 @@ export type State = {
  * Base class containing common functionality for the Client implementation.
  */
 export abstract class Protocol {
-  // static ENSURE_ALIVE_SECS = 30;
   static EXECUTE_TIMEOUT_SECS = 8;
 
   /**
@@ -111,8 +110,6 @@ export abstract class Protocol {
   onResponse: ((response: Response) => void) | undefined;
 
   protected constructor() {
-    // @TODO: Fix keep alive?
-    // this._socket = new Socket().setKeepAlive(true, Protocol.ENSURE_ALIVE_SECS * 1000);
     this.socket = new Socket();
 
     // Handle data received
@@ -386,9 +383,7 @@ export abstract class Protocol {
 
     this.executing[command.name] = state;
 
-    this._send(command, password);
-
-    return new Promise<R>((resolve, reject) => {
+    const response = new Promise<R>((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new CommandTimeoutError(command));
       }, timeout * 1000);
@@ -401,6 +396,10 @@ export abstract class Protocol {
       logger.debug(`Deleting command: ${command.name}`);
       delete this.executing[command.name];
     });
+
+    this._send(command, password);
+
+    return response;
   }
 
   private _send(command: Command, password: string) {
