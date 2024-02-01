@@ -1,9 +1,22 @@
+import { DateTime, Settings } from 'luxon';
 import { DC_BASEUNIT, DC_BURGLAR, DC_CONTROLLER } from '../../src/DeviceCategory';
 import { ContactIDEventCode, ContactIDEventQualifier, IntEnum } from '../../src/Enums';
 import EventLogResponse from '../../src/Responses/EventLogResponse';
 
+let originalNow: typeof Settings['now'];
+const now = DateTime.utc(2023, 1, 1, 0, 0, 0, 0).toMillis();
+
 describe('EventLogResponse', () => {
   describe('constructor', () => {
+    beforeEach(() => {
+      originalNow = Settings.now;
+      Settings.now = () => now;
+    });
+
+    afterEach(() => {
+      Settings.now = originalNow;
+    });
+
     test('RFLowBattery', () => {
       const response = new EventLogResponse('ev138413010901112201260b7');
       expect(response.action).toEqual(DC_BURGLAR);
@@ -15,6 +28,7 @@ describe('EventLogResponse', () => {
       expect(response.userId).toBeUndefined();
       expect(response.unitNumber).toBe(9);
       expect(response.dateTime).toBe('2023-11-22T01:26:00.000');
+
     });
 
     test('ACPowerLoss', () => {
