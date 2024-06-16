@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] Unreleased
+### Added
+- .`nvmrc` file.
+- Enforce node 20+.
+
+### Changed
+- Dependabot uses node version from `.nvmrc`.
+- Dependabot updates GitHub actions.
+
+### Fixed
+- Test to work with node 20+
+
 ## [1.0.2] 2023-12-16
 
 ### Fixed
