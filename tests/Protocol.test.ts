@@ -45,7 +45,7 @@ describe('Protocol', () => {
 
   test('constructor', () => {
     expect(protocol.socket).toBeInstanceOf(Socket);
-    expect(protocol.socket.eventNames()).toEqual(['end', 'data', 'error', 'connect', 'close']);
+    expect(protocol.socket.eventNames()).toEqual(['close', 'error', 'data', 'end', 'connect']);
   });
 
   describe('handleOnError', () => {
