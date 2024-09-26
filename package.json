@@ -45,7 +45,7 @@
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.13",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^20.16.7",
+    "@types/node": "^20.16.9",
     "@types/sprintf-js": "^1.1.4",
     "eslint": "^9.11.1",
     "eslint-plugin-jest": "^28.8.3",
