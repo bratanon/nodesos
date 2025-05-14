@@ -111,6 +111,7 @@ export class BaseUnit {
 
     this.handleConnectionMade = this.handleConnectionMade.bind(this);
     this.handleConnectionClose = this.handleConnectionClose.bind(this);
+    this.handleConnectionError = this.handleConnectionError.bind(this);
     this.handleContactId = this.handleContactId.bind(this);
     this.handleDeviceEvent = this.handleDeviceEvent.bind(this);
     this.handleResponse = this.handleResponse.bind(this);
@@ -118,6 +119,7 @@ export class BaseUnit {
     // Assign callbacks to capture all events
     this.protocol.onConnectionMade = this.handleConnectionMade;
     this.protocol.onConnectionClose = this.handleConnectionClose;
+    this.protocol.onConnectionError = this.handleConnectionError;
     this.protocol.onContactId = this.handleContactId;
     this.protocol.onDeviceEvent = this.handleDeviceEvent;
     this.protocol.onResponse = this.handleResponse;
@@ -384,6 +386,11 @@ export class BaseUnit {
     }
 
     this.isConnected = false;
+  }
+
+  private handleConnectionError() {
+    logger.info('Will try to reconnect to LifeSOS...');
+    setTimeout(() => this.start().catch((error) => logger.error(error)), 10 * 1000);
   }
 
   private async getInitialState() {
