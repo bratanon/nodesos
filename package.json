@@ -1,6 +1,6 @@
 {
   "name": "nodesos",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A module to communicate with LifeSOS alarm systems.",
   "repository": {
     "type": "git",
@@ -20,11 +20,11 @@
     "prebuild": "rimraf dist",
     "build": "parcel build --no-source-maps --no-cache",
     "format:package": "npx sort-package-json",
-    "test": "jest",
     "lint": "eslint src",
-    "prettier": "prettier src --write",
     "prepare": "husky",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prettier": "prettier src --write",
+    "test": "jest"
   },
   "lint-staged": {
     "src/**/*.ts": [
