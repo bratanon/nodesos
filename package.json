@@ -44,7 +44,7 @@
     "@parcel/transformer-typescript-types": "^2.15.4",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.14",
-    "@types/luxon": "^3.7.0",
+    "@types/luxon": "^3.7.1",
     "@types/node": "^20.16.15",
     "@types/sprintf-js": "^1.1.4",
     "eslint": "^9.32.0",
